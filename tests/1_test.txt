@@ -1,0 +1,34 @@
+{{Languages|
+{{en|Administration Screens}}
+{{fr|Panneaux Administration}}
+}}
+==Test of Codex To HelpHub==
+This is test data of Codex to HelpHub. For more details, please refer [https://github.com/atachibana/codextohelphub my GitHub repository].
+===Detail===
+Line begins with star is list
+* List 1
+* List 2
+Line begins with sharp is numbered list
+# Numbered List 1
+# Numbered List 2
+:Indented text
+Sentence can have embedded <tt>mono space</tt>.
+ x = 10;  // indent is program
+ y = 20;  // indent is program
+Another program example:
+<pre>
+#include <stdio.h>
+int main(int argc, char* argv[])
+{
+  printf("Hello World.\n");
+}
+</pre>
+[[Administration Screens]]
+[[Administration Screens|Administration Screen]]
+[http://example.com Example site]
+[http://example.com]
+===Test of Codex3 ===
+====Test of Codex4 ====
+=====Test of Codex5 =====
+======Test of Codex6 ======
+[[Category:WordPress Installation]]

@@ -1,0 +1,14 @@
+Reset your permalinks through '''Settings > Permalinks.''' If this does not work, you may have to edit the <tt>.htaccess</tt> file manually. 
+
+<pre id="htaccess_sample"># BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FLENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress</pre> 
+
+If you are not familiar with editing your <tt>.htaccess</tt> file, contact your hosting provider to ask them to turn on mod_rewrite rules.

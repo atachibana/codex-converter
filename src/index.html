@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WordPress Codex to HelpHub Migrator (Beta)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="description" content="WordPress Codex to HelpHub Migrator" />
+	<meta name="keywords" content="wordpress, codex, helphub" />
+	<meta name="author" content="Akira Tachibana" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $('#migrate').click(function()
+        {
+            var data = {request : $('#codex').val()};
+            $('#helphub').val("");
+            $.ajax({
+                type: "POST",
+                url: "web-codextohelphub.php",
+                data: data,
+            }).done(function(data, dataType) {
+                // alert(data);
+                $('#helphub').val(data);
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : ' + errorThrown);
+            });
+            return false;
+        });
+    });
+    </script>
+</head>
+<body>
+    <h1>WordPress Codex to HelpHub Migrator (Beta)</h1>
+    <p id="description">By Akira Tachibana from <a href="http://unofficialtokyo.com" target="_blank">unofficialtokyo.com</a></p>
+    <div id="main">
+      <div class="sub-panel">
+        <textarea class="codetext" id="codex"
+        placeholder="Cut &amp; Paste Codex source here and click the button.">
+==Demo==
+Click right button and see the results.
+==How to use==
+# Cut &amp; paste Codex source here.
+# Click right button
+# Refer "**TODO**" that requires post production (ex. Image pastting)
+# Check whole contents. This program is not complete converter.
+==Comments==
+Send the mail to atachibana&lt;at>unofficialtokyo.com.
+GitHub ... Comming Soon!</textarea>
+      </div>
+        <form id="button-area" method="post">
+            <input id="migrate" value=" >> " type="submit" />
+        </form>
+      <div class="sub-panel">
+        <textarea class="codetext" id="helphub"></textarea>
+      </div>
+    </div>
+</body>
+</html>

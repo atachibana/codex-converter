@@ -1,0 +1,43 @@
+{{Languages|
+{{en|Function_Reference/bool_from_yn}}
+{{ja|ŠÖ”ƒŠƒtƒ@ƒŒƒ“ƒX/bool_from_yn}}
+}}
+
+== Description ==
+Whether input is yes or no. Must be '<tt>y</tt>' to be true.
+
+== Usage ==
+%%%<?php bool_from_yn( $yn ) ?>%%%
+
+== Parameters ==
+{{Parameter|$yn|string|Character string containing either '<tt>y</tt>' or '<tt>n</tt>'}}
+
+== Return Values ==
+; (boolean) : <tt>True</tt> if yes, <tt>false</tt> on anything else
+
+== Examples ==
+<!-- Need creative examples. Feel free to link to external examples. -->
+
+== Notes ==
+* '<tt>y</tt>' returns <tt>true</tt>,
+* '<tt>Y</tt>' returns <tt>true</tt>,
+* Everything else returns <tt>false</tt>.
+
+== Change Log ==
+Since: 1.0.0
+
+== Source File ==
+<tt>bool_from_yn()</tt> is located in {{Trac|wp-includes/functions.php}}.
+
+== Related ==
+<!--
+    To Do:
+    Need to find related functions.
+    Need to create groups of functions and create templates to add them to a page quickly.
+    Some functions may be related to many groups of functions.
+-->
+
+{{Tag Footer}}
+
+[[Category:Functions]]
+[[Category:New_page_created]]

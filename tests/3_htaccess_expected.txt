@@ -1,0 +1,14 @@
+<p>Reset your permalinks through <strong>Settings > Permalinks.</strong> If this does not work, you may have to edit the <code>.htaccess</code> file manually. </p>
+<p></p>
+[code language="php"]# BEGIN WordPress
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FLENAME} !-d
+RewriteRule . /index.php [L]
+&lt;/IfModule&gt;
+# END WordPress [/code]
+<p></p>
+<p>If you are not familiar with editing your <code>.htaccess</code> file, contact your hosting provider to ask them to turn on mod_rewrite rules.</p>

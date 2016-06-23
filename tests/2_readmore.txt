@@ -1,0 +1,225 @@
+{{Languages|
+{{en|Customizing the Read More}}
+{{ja|「続きを読む」のカスタマイズ}}
+{{pt-br|Personalizando "Leia Mais"}}
+}}
+
+If you have set your WordPress site to display post excerpts on the front or home page, you will want visitors to click on the title or a link to encourage them to continue reading your post or article, right?  WordPress makes this technique easy, and customizable.
+
+==The Excerpt Basics==
+
+Excerpts (teasers) can be shown on WordPress through two methods:
+*The first, keeping the <tt>the_content()</tt> template tag and inserting a quicktag called '''more''' at your desired "cut-off" point when editing the post.
+
+*The second, by replacing the <tt>[[Template Tags/the_content|the_content()]]</tt> template tag with <tt>[[Template Tags/the_excerpt|the_excerpt()]]</tt>.
+
+In both cases, if you have set anything in the Excerpt meta box on the post editor screen, that text will be used. Otherwise, the excerpt will be automatically trimmed.
+
+The most commonly used method is the first one, because the user editing the post can choose between showing the whole content or just the excerpt, individually for each post. However, using <tt>the_excerpt()</tt> in your template file can also get a teaser from the first 55 words of the post content, without the need to place a '''more''' quicktag in the post.
+
+To add a '''more''' quicktag in your post, put your cursor where you want to end the excerpted content of your post and click the '''more''' quicktag button.
+[[Posts_Add_New_Screen#Visual_Versus_Text_Editor|quicktags]] are the little buttons found above the editing window in your [[Administration Screens|Administration]] > [[Administration_Screens#Posts|Post]] > [[Posts_Add_New_Screen|Add New Post]]. They include '''bold''', ''italic'', links, and others, and the famous '''more'''.
+
+[[Image:posteditor_more_button_text.jpg]]
+
+It will insert a code at that point that looks like this:
+
+<pre>and I told him that he should get moving or I'd be
+on him like a limpet.  He looked at me with shock on
+his face and said
+
+<!--more--></pre>
+
+The rest of the post continues in the editing window, but when viewed on the non-single/non-permalink web page such as archives, categories, front page, and searches, the post is shown as an excerpt to the '''more''' point.
+
+Users can then continue reading more as you have enticed them with your summary introduction, by clicking on a link to the full article. Themes usually include this link in the title and the above methods will generate it by default trailing your teaser, as the example below.
+
+<div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said [[#Customizing_the_.22more.E2.80.A6.22_text|more...]]</div>
+
+==Read More Techniques==
+The parameters within the template tag [[Template_Tags/the_content|the_content()]] are as follows:
+
+ <?php the_content( $more_link_text , $strip_teaser ); ?>
+
+The '''$more_link_text''' sets the link text like "Read More".  The second one, '''$strip_teaser''', sets whether or not the teaser part or excerpt part before the more text should be stripped (TRUE) or included (FALSE). The default is FALSE, which shows the teaser part.
+
+To remove the teaser part:
+
+* Change <tt>the_content();</tt> in your <tt>index.php</tt> to (i.e., the second parameter controls this):
+<pre>the_content( '', TRUE );</pre>
+
+* Include <tt><nowiki><!--noteaser--></nowiki></tt> in the post text, immediately after the <tt><nowiki><!--more-->.</nowiki></tt>
+
+===Prevent Page Scroll When Clicking the More Link===
+By default, clicking the '''.more-link''' anchor opens the web document and scrolls the page to section of the document containing the named anchor (#more-000). This section is where writers choose to place the <tt>&lt;!--more--&gt;</tt> tag within a post type.
+
+Users can prevent the scroll by filtering <tt>the_content_more_link</tt> with a simple regular expression.
+
+<pre>
+function remove_more_link_scroll( $link ) {
+	$link = preg_replace( '|#more-[0-9]+|', '', $link );
+	return $link;
+}
+add_filter( 'the_content_more_link', 'remove_more_link_scroll' );
+</pre>
+
+Simply add the above code to the theme's <tt>functions.php</tt> file and the named anchors are no more.
+
+===Modify The Read More Link Text===
+
+Adding this code to your <tt>functions.php</tt> file enables you to customize the read more link text.
+<pre>
+function modify_read_more_link() {
+    return '<a class="more-link" href="' . get_permalink() . '">Your Read More Link Text</a>';
+}
+add_filter( 'the_content_more_link', 'modify_read_more_link' );
+</pre>
+
+Code reference: https://developer.wordpress.org/reference/hooks/the_content_more_link/
+
+==Modify the Read More text when using the <tt>the_excerpt()</tt>==
+
+Sometimes you can't afford adding a '''more''' quicktag to all your posts, so the only way to show an excerpt is modifying the template, changing <tt>the_content()</tt> to <tt>the_excerpt()</tt>. It will show the text "Read More" ([[Version 4.1]] and later) or "[...]" (older versions).
+
+To customize this text, add the following code to your ''functions.php'' file.
+
+<pre>
+// Replaces the excerpt "Read More" text by a link
+function new_excerpt_more($more) {
+       global $post;
+	return '<a class="moretag" href="'. get_permalink($post->ID) . '"> Read the full article...</a>';
+}
+add_filter('excerpt_more', 'new_excerpt_more');
+</pre>
+
+If you are using a [[Child Themes|Child Theme]], the above code will not work without modification if the parent theme has its own filters setting its own "more" link. You will need to use the <tt>[[Function Reference/remove filter|remove_filter()]]</tt> function to remove the parent's filters for yours to work. The problem is your functions.php file is loaded before the parent's functions.php, so at the time of your file's execution, there is no filter to remove yet, and your <tt>remove_filter()</tt> code will fail without warning.
+
+The key is to put your <tt>remove_filter()</tt> code in a function that executes from an [[Plugin API/Action Reference|action hook]] that triggers after the parent theme is loaded. The following code is an example of the additional code needed to get the above code to work from a child theme of the parent theme <i>[[Twenty Eleven]]</i>. You will need to examine your actual parent theme's code for the correct parameters in the <tt>remove_filter()</tt> code, they must exactly match the <tt>add_filter()</tt> parameters used by the parent.
+<pre>
+function child_theme_setup() {
+	// override parent theme's 'more' text for excerpts
+	remove_filter( 'excerpt_more', 'twentyeleven_auto_excerpt_more' );
+	remove_filter( 'get_the_excerpt', 'twentyeleven_custom_excerpt_more' );
+}
+add_action( 'after_setup_theme', 'child_theme_setup' );
+</pre>
+
+== Customizing the "more&hellip;" text ==
+Seeing that you know how it works, now look at how we can make this little invitation to continue reading your post be more inviting.
+
+By design, the <tt>[[Template Tags/the_content|the_content()]]</tt> template tag includes a parameter for setting the text to be displayed in the the "more&hellip;" link which allows you to continue reading.
+
+By default, it looks like this:
+
+<div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said [[#Customizing_the_.22more.E2.80.A6.22_text|more...]]</div>
+
+If you want to change the words from ''more....'' to something else, just type in the new words into the template tag:
+
+<pre><?php the_content('Read on...'); ?></pre>
+
+Or get more sophisticated and make it fun:
+
+<pre><?php the_content('...on the edge of your seat? Click
+here to solve the mystery.'); ?></pre>
+
+You can style the text in the template tag, too.
+
+<pre><?php the_content('<span class="moretext">...on the edge of
+your seat? Click here to solve the mystery.</span>'); ?></pre>
+
+Then set the <tt>moretext</tt> class in your <tt>style.css</tt> style sheet to whatever you want.  Here is an example of the style which features bold, italic text that is slightly smaller than the default text:
+
+<div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <span style="font-weight: bold; font-size: 90%; font-style: italic; ">[[#Customizing_the_.22more.E2.80.A6.22_text|...On the Edge of Your Seat? Click Here to Solve the Mystery.]]</span></div>
+
+Some people do not want the text and prefer to use an extended character or [[Fun_Character_Entities|HTML character entity]] to move the reader on to the full post.
+
+<pre><?php the_content('&amp;raquo; &amp;raquo; &amp;raquo; &amp;raquo;'); ?></pre>
+
+Would look like this:
+
+<div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said [[#Customizing_the_.22more.E2.80.A6.22_text|&raquo; &raquo; &raquo; &raquo;]]</div>
+
+If you want to include the title of the post in the '''more''' text, use <tt>[[Template Tags/the_title|the_title()]]</tt> template tag::
+
+<pre><?php the_content("...continue reading the story
+called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?></pre>
+
+<div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said [[#Customizing_the_.22more.E2.80.A6.22_text|...continue reading the story called A Tale That Must Be Told]]</div>
+
+===Having a custom text for each post===
+
+Although <tt>the_content()</tt> is usually called from the template with a standard text as described above, it is possible to have an individual text for certain posts. In the text editor, simply write <tt><nowiki><!--more Your custom text --></nowiki></tt>.
+
+So, you may have something like this:
+
+<tt><nowiki><!--more But wait, there's more! --></nowiki></tt>
+
+===Adding An Image===
+The design possibilities with CSS are practically unlimited, and WordPress allows you to use images in many of their [[Template Tags]], including the <tt>more</tt> tag.  To add an image, there are two ways to do it.  Begin with the most simple -- listing it in <tt>the_content()</tt> template tag.
+
+This examples features the image of a leaf after the "Read More" text and assumes that the image file is within your theme's images folder.
+
+<pre><?php the_content('Read more...<img src="' . get_bloginfo('template_directory'). '/images/leaf.gif" alt="read more" title="Read more..." />'); ?></pre>
+
+Notice that the code uses an <tt>ALT</tt> and <tt>TITLE</tt> in the image tag.  This is in compliance with accessibility and web standards, since the image is both an image and a link.  Here is what it might look like.
+
+<div style="border:1px solid blue; width:70%; margin: 20px; padding:20px">
+and I told him that he should get moving or I'd be on him like a limpet. He looked at me with shock on his face and said <span style="color:blue"><u>Read More...</u></span>&nbsp;&nbsp;&nbsp;[[Image:leaf.gif|leaf]]<br /><br /></div>
+
+You could even add a style to the image and <tt>more</tt> tag, as mentioned above, to style it even more. To use the image without the "Read More" text, just delete the text.
+
+The second example uses the CSS background image.  We have described how to use style classes in the above examples. This is a little tricker.  The container's style must be set to allow the background image to show out from behind the text.  If you were to use the above example as a background image, the <tt>style.css</tt> style sheet for this might look like this:
+
+<pre>.moretext {
+   width: 100px;
+   height: 45px;
+   background:url(/images/leaf.gif) no-repeat right middle;
+   padding: 10px 50px 15px 5px}</pre>
+
+The 50px padding against the right margin should make sure the text is pushed over away from the image as to not overlap it. The height ensures that the container will expand wide enough so the image is visible within the container, since a background image isn't "really there" and can not push against the container's borders.  You may have to experiment with this to fit the size and shape of your own image.
+
+You have gotten the basics.  From here, it is up to your imagination.
+
+===How to use Read More in Pages===
+
+Please remember that the "Read More" tag is used only on the Home page which shows the latest posts. It does not work in "[[Pages|Pages]]". If you want to turn it on in [[Pages|Pages]] too for showing a set of partial posts, use the following code inside the loop for the dynamic content:
+
+<pre>
+<?php
+global $more;
+$more = 0;
+?>
+//The code must be inserted ahead of the call the_content(), but AFTER the_post()
+
+<?php the_content('Continue Reading'); ?>
+
+</pre>
+
+====When to set $more====
+It's important that if you're going to over-ride the default $more global variable you do it ''inside'' The Loop, but ''after'' your setup the post. If you're working with the standard Loop and using <tt>the_post()</tt>, make sure you set <tt>$more</tt> ''after'' <tt>the_post</tt> (but ''before'' <tt>the_content()</tt>.
+
+See [https://wordpress.org/support/topic/more-tag-ignored-on-home-page More tag ignored on static front page] forum topic.
+
+===More about $more===
+
+If you set the $more variable to -1, the More tag will not be displayed.  This can be useful in a "mullet loop", which displays the full content for only the first post, and then displays only excerpts for all remaining posts. Like this:
+
+<pre>
+<?php global $more; $more = -1; //declare and set $more before The Loop ?>
+<?php if (have_posts()) : while (have_posts()) : the_post(); //begin The Loop ?>
+<?php
+    if ($more == -1) { //do not use the more tag on the first one.
+        the_content();
+        $more = 0; //prevent this from happening again. use the more tag from now on.
+    }
+    else { //use the more tag
+        the_content(__('Read more...'));
+    }
+?>
+<?php endwhile; //end of The Loop ?>
+</pre>
+
+
+
+[[Category:WordPress Lessons]]
+[[Category:Design and Layout]]

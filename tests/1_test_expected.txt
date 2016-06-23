@@ -1,0 +1,34 @@
+<h2>Test of Codex To HelpHub</h2>
+<p>This is test data of Codex to HelpHub. For more details, please refer <a href="https://github.com/atachibana/codextohelphub">my GitHub repository</a>.</p>
+<h3>Detail</h3>
+<p>Line begins with star is list</p>
+<ul>
+<li>List 1</li>
+<li>List 2</li>
+</ul>
+<p>Line begins with sharp is numbered list</p>
+<ol>
+<li>Numbered List 1</li>
+<li>Numbered List 2</li>
+</ol>
+<p style="padding-left: 30px;">Indented text</p>
+<p>Sentence can have embedded <code>mono space</code>.</p>
+[code language="php"]x = 10;  // indent is program[/code]
+[code language="php"]y = 20;  // indent is program[/code]
+<p>Another program example:</p>
+[code language="php"]
+#include <stdio.h>
+int main(int argc, char* argv[])
+{
+  printf("Hello World.\n");
+}
+[/code]
+<p><a href="https://codex.wordpress.org/Administration Screens">Administration Screens</a></p>
+<p><a href="https://codex.wordpress.org/Administration Screens">Administration Screen</a></p>
+<p><a href="http://example.com">Example site</a></p>
+<p><a href="http://example.com">http://example.com</a></p>
+<h3>Test of Codex3</h3>
+<h4>Test of Codex4</h4>
+<h5>Test of Codex5</h5>
+<h6>Test of Codex6</h6>
+<p>Category:WordPress Installation</p>

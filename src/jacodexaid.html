@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>WordPress Codex Translattion Aid Tool</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="description" content="WordPress Codex to HelpHub Migrator" />
+	<meta name="keywords" content="wordpress, codex, helphub" />
+	<meta name="author" content="Akira Tachibana" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $('#migrate').click(function()
+        {
+            var data = {request : $('#codex').val()};
+            $('#helphub').val("");
+            $.ajax({
+                type: "POST",
+                url: "web-codextoja.php",
+                data: data,
+            }).done(function(data, dataType) {
+                // alert(data);
+                $('#helphub').val(data);
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : ' + errorThrown);
+            });
+            return false;
+        });
+    });
+    </script>
+</head>
+<body>
+    <h1>WordPress Codex Translation Aid Tool Japanese edition</h1>
+    <p id="description">By Akira Tachibana (<a href="https://github.com/atachibana/codextohelphub">https://github.com/atachibana/codextohelphub</a>)</p>
+    <div id="main">
+      <div class="sub-panel">
+        <textarea class="codetext" id="codex"
+        placeholder="Cut &amp; Paste Codex source here and click the button."></textarea>
+      </div>
+        <form id="button-area" method="post">
+            <input id="migrate" value=" >> " type="submit" />
+        </form>
+      <div class="sub-panel">
+        <textarea class="codetext" id="helphub"></textarea>
+      </div>
+    </div>
+</body>
+</html>

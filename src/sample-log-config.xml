@@ -1,0 +1,14 @@
+<configuration xmlns="http://logging.apache.org/log4php/">
+
+    <appender name="myFileAppender" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutPattern">
+            <param name="conversionPattern" value="%date [%logger] %message%newline" />
+        </layout>
+        <param name="file" value="migrator.log" />
+    </appender>
+
+    <root>
+        <level value="TRACE" />
+        <appender_ref ref="myFileAppender" />
+    </root>
+</configuration>
