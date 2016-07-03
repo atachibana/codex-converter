@@ -14,7 +14,13 @@ require_once( 'class-codex.php' );
 header( 'Content-type: text/plain; charset=UTF-8' );
 
 if ( isset( $_POST['codex'] ) && isset( $_POST['converter_type'] ) ) {
-    $data = $_POST['codex'];
+    // if magic_quotes is on, double quotation and some characters are escaped.
+    $data = "";
+    if ( get_magic_quotes_gpc() ) {
+        $data = stripslashes( $_POST['codex']);
+    } else {
+        $data = $_POST['codex'];
+    }
     $cr = array( "\r\n", "\r" );
     $data = str_replace( $cr, "\n", $data );
     $data_array = explode( "\n", $data );
