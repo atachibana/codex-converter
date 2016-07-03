@@ -53,7 +53,7 @@ php command-codextohelphub.php -i <input_file> -o <output_file>
 Refer codex-converter.log. To change log file name or log level, edit class-logger.php direct.
 
 ## logger
-codex-converter uses own Logger class only for a removal of external library dependency. That has the same interface with log4php with some limitation.
+codex-converter uses own Logger class only for a removal of external library dependency. That has the same interface with log4php with limitations.
 
 * Not ussing log-config.xml. To change log file name or log level, edit class-logger.php direct.
 * Terrible performance when LOGGERLEVEL_TRACE is set for long Codex article. Use only for debug or consider to use log4php.
@@ -74,6 +74,48 @@ Codex to HelpHub:
 Codex Translater Aid Tool (Beta):
 * Japanse support only.
 * Some functions are not implemented yet such as automatic retrieve function by URL specification. Refer ToDo.
+
+# Files
+
+```
+README.md                         readme (This file)
+testrun.ba_                       (Windows) phpunit test kicker
+run.ba_                           (Windows) command line HelpHub launcher
+
+src/
+  class-codex.php                 Codex class (main)
+  interface-converter.php         Interface of Converter
+  ws-codex-converter.php          receiver
+  class-logger.php                Own poor Logger
+  class-result.php                Output result keeper            
+  codex-converter.css             stylesheet
+  loader.gif                      animated loader
+  sample-functions.php            sample functions.php (part of)     
+  sample-log-config.xml           sample log4php configuration file
+  (codex-converter.log)           (not included) log file
+
+                                  // --- Codex to HelpHub ---
+  page-codextohelphub.php         Page Template
+  codex-converter.js              invoker
+  codextohelphub.html             standalone web page (test purpose)
+  command-codextohelphub.php      command line interface
+  helphub
+    class-helphub-converter.php   Converter class (main logic)
+
+                                  // ---Codex Translator Aid ---
+  page-codextranslatoraid.php     Page Template
+  codex-translator-aid.js         invoker
+  codextranslatoraid.html         standalone web page (test purpose)
+  jacodex
+    class-jacodex-converter.php   Converter class (main logic)
+
+tests/
+  CodexHelpHubTest.php            phpunit test for Codex to HelpHub
+  CodexJaCodexTest.php            phpunit test for Codex Translator Aid
+  (others)                        test files
+  (others_expected)               expected results
+```
+
 
 # Deployment
 
