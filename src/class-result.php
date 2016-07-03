@@ -1,86 +1,86 @@
 <?php
-/*****************************************************************************
- * Wrapper class to keep the migrated result.
+/**
+ * Converted result keeper.
  *
- * by Akira Tachibana
- ****************************************************************************/
-// require_once( 'log4php/Logger.php' );
-require_once( 'class-logger.php' );
+ * Get Result object by Result::get_result() static method and call add() or
+ * add_bottom() method.
+ *
+ * @link		https://github.com/atachibana/codex-converter/
+ * @author		Akira Tachibana
+ */
 
 /**
- * Wrapper class to keep the migrated result.
+ * Wrapper class to keep the converted result.
  *
- * This class wrapps array $data for input / output with trace message.
+ * Internally it has two array
+ *   - result_array : usual converted line. Converter object appends its result
+ *                    at the bottom of this array
+ *   - bottom_array : Some text should be output at the end of contents. In
+ *                    case of Japanese codex, language locator is in bottom.
  */
 class Result {
-    private $result_array = NULL;
-    private $bottom_array = NULL;
+    private $result_array = array();
+    private $bottom_array = array();
     private $logger = NULL;
 
     /**
-     *  private consturctor to refuse user's new()
+     * Private constructor to force factory method call.
+     *
+     * Initializes logger.
      */
     private function __construct() {
-        $this->result_array = array();
-        $this->bottom_array = array();
-        Logger::configure( 'log-config.xml' );
-        $this->logger = Logger::getLogger( 'migrate' );
+        $this->logger = Logger::getLogger( 'codex-converter' );
     }
 
     /**
-     *  stattic method returns singleton object
+     * Returns Result object.
      *
-     *  @return Result sigleton object
+     * If not yet, instantiate the object and returns.
+     *
+     * @return Result object.
      */
-    public static function get_object () {
-        static $object;
-        if ( !isset ($object) ) {
-            $object = new Result();
+    public static function get_result () {
+        static $result;
+        if ( !isset ( $result ) ) {
+            $result = new Result();
         }
-        return $object;
+        return $result;
     }
 
     /**
-     * Sets log4php instance
+     * Adds converted text to array.
      *
-     * This setting is option. Even if without settings, this class
-     * successfully runs.
-     *
-     * @param Logger $logger instance of log4php Logger class.
-     */
-    // public function set_logger( Logger $logger ) {
-    //     $this->logger = $logger;
-    // }
-
-    /**
-     * add to result array
-     *
-     * @param string $line migrated data should be returned.
+     * @param string $line converted text should be returned.
      */
     public function add( $line ) {
         $this->logger->trace( __METHOD__ . " $line" );
         array_push( $this->result_array, $line );
     }
 
+    /**
+     * Adds converted text should be bottom contents.
+     *
+     * @param string $line converted text should be returned as bottom
+     *        contents.
+     */
     public function add_bottom( $line ) {
         $this->logger->trace( __METHOD__ . " $line" );
         array_push( $this->bottom_array, $line );
     }
 
     /**
-     * return whole data
+     * Returns whole data as array and clear the internal area.
      *
-     * @return array whole migrated results
+     * Two internal arrays are concatinated before its return.
+     *
+     * @return array whole converted results.
      */
     public function getall_and_clear() {
         $return_value = $this->result_array;
-        $this->logger->trace( __METHOD__ . " " . implode( ",", $return_value ) );
-        $this->logger->trace( __METHOD__ . " bottom_array=" . implode( ",", $this->bottom_array ) );
         if ( 0 < count($this->bottom_array) ) {
             $return_value = array_merge( $return_value, $this->bottom_array );
-            $this->logger->trace( __METHOD__ . " " . implode( ",", $return_value ) );
         }
-        $this->logger->trace( __METHOD__ . " " . implode( ",", $return_value ) );
+        $this->logger->trace( __METHOD__ . ' ' . implode( ',', $return_value ) );
         $this->result_array = array();
         $this->bottom_array = array();
         return $return_value;

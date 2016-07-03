@@ -1,10 +1,11 @@
 <?php
-/*****************************************************************************
- * Web interface of CodexToHelpHub
+/**
+ * Triggerred interface from Codex to JA Codex
  *
- * by Akira Tachibana
- ****************************************************************************/
-require_once( 'class-codex-converter.php' );
+ * @link		https://github.com/atachibana/codex-converter/
+ * @author		Akira Tachibana
+ */
+require_once( 'class-codex.php' );
 
 header( "Content-type: text/plain; charset=UTF-8" );
 
@@ -15,11 +16,11 @@ if ( isset( $_POST['request'] ) ) {
     $data_array = explode( "\n", $data );
 
 	try {
-        $codex_to = new CodexConverter('HelpHub');
+        $codex_to = new Codex(Codex::TO_JACODEX);
         $new_data = $codex_to->convert( $data_array );
 		echo implode( "\n", $new_data );
 	} catch ( Exception $e ) {
-		$error_message = "ERROR: " . $e->getMessage() . ", TRACE: " . $e->getTraceAsString();
+		$error_message = 'ERROR: ' . $e->getMessage() . ', TRACE: ' . $e->getTraceAsString();
 		echo $error_message;
 	}
 }

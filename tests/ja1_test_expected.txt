@@ -1,0 +1,41 @@
+
+== 説明<span id="Description"></span> ==
+Whether input is yes or no. Must be '<tt>y</tt>' to be true.
+
+== 使い方<!--Usage--> ==
+<pre><?php bool_from_yn( $yn ) ?></pre>
+
+== パラメータ<!--Parameters--> ==
+{{Parameter|$yn|string|Character string containing either '<tt>y</tt>' or '<tt>n</tt>'}}
+
+== 戻り値<!--Return Values--> ==
+; (boolean) : <tt>True</tt> if yes, <tt>false</tt> on anything else
+
+== 用例<!--Examples--> ==
+<!-- Need creative examples. Feel free to link to external examples. -->
+
+== 注<!--Notes--> ==
+* '<tt>y</tt>' returns <tt>true</tt>,
+* '<tt>Y</tt>' returns <tt>true</tt>,
+* Everything else returns <tt>false</tt>.
+
+== 変更履歴<!--Change Log--> ==
+Since: 1.0.0
+
+== ソースファイル<!--Source File--> ==
+<tt>bool_from_yn()</tt>  は {{Trac|wp-includes/functions.php}} で定義されています。
+
+== 関連<!--Related--> ==
+<!--
+<pre>To Do:</pre>
+<pre>Need to find related functions.</pre>
+<pre>Need to create groups of functions and create templates to add them to a page quickly.</pre>
+<pre>Some functions may be related to many groups of functions.</pre>
+-->
+
+{{Tag Footer}}
+
+Category:Functions
+Category:New_page_created
+[[en:Function_Reference/bool_from_yn]]
+[[ja:関数リファレンス/bool_from_yn]]

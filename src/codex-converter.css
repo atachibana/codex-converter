@@ -1,0 +1,45 @@
+/**
+ *  Codex Converter to HelpHub stylesheet used by page-codex-converter.php.
+ *
+ * @summary   Codex Converter to HelpHub stylesheet.
+ *
+ * @link      https://github.com/atachibana/codex-converter/
+ * @author    Akira Tachibana
+ */
+
+div#codex-converter {
+	font-family: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+div#codex-converter p {
+	margin-bottom: 0;
+}
+
+div#codex-converter-main {
+	display:flex;
+	margin-bottom: 20px;
+}
+
+div.sub-panel {
+	width: 47%;
+	height: 400px;
+	padding: 0 10px;
+}
+
+div#center-panel {
+	width: 6%;
+	height: 400px;
+	text-align: center;
+}
+
+textarea.codetext {
+	width: 100%;
+	height: 100%;
+	font-size: small;
+	font-family: monospace;
+}
+
+p#msg-area {
+    color: red;
+    font-weight: bold;
+}

@@ -1,6 +1,6 @@
 {{Languages|
 {{en|Function_Reference/bool_from_yn}}
-{{ja|ŠÖ”ƒŠƒtƒ@ƒŒƒ“ƒX/bool_from_yn}}
+{{ja|é–¢æ•°ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹/bool_from_yn}}
 }}
 
 == Description ==

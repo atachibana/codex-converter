@@ -1,115 +1,153 @@
 <?php
+/**
+ * HelpHub Converter classes.
+ *
+ * Defines rule of Codex to HelpHub conversion.
+ *
+ * @link		https://github.com/atachibana/codex-converter/
+ * @author		Akira Tachibana
+ */
 
-// require_once( 'interface-converter.php' );
-// require_once( 'class-result.php' );
-// require_once( 'class-adapter.php' );
+/**
+ * Base class of Converters.
+ *
+ * Defines common constants and methods. In concrete object, defines
+ * common conversion rule can be shared among child classes.
+ */
+abstract class HelpHubConverter implements Converter {
 
-class HelpHubConverterMgr {
+	private $type = "";
 
-	// static $filter;
-
-	public function __construct( $filter_type ) {
-		// $this->filter = new $filter_type();
-        // Adapter::initialize( $filter_type );
-	}
-
-	public function get_converter( $type ) {
-		// error_log( __METHOD__ . " type=" . $type );
-		$classname = $type;
-		return new $classname( $type );
-	}
-}
-
-abstract class Converter {
-
-    const TYPE_BASE      = 'Converter';
-    const TYPE_PLAIN     = 'PlainConverter';
-	const TYPE_TITLE     = 'TitleConverter';        // == Title ==
-	const TYPE_STAR      = 'StarConverter';         // *bullet list
-	const TYPE_SHARP     = 'SharpConverter';        // #number list
-	const TYPE_PRE       = 'PreConverter';          // <pre>...</pre>
-	const TYPE_COLON     = 'ColonConverter';        // ;sub-title:description
-	const TYPE_SEMICOLON = 'SemicolonConverter';    // ;sub-title:description
-	const TYPE_SPACE     = 'SpaceConverter';        //   x = 10;
-	const TYPE_BRACE     = 'BraceConverter';        // {{ or }}
-
-	private $type;
-
+	/**
+	 * Initializes $type by input line type.
+	 *
+	 * @param string $type line type. values are Converter::TYPE_XXX.
+	 */
 	public function __construct( $type ) {
-		// error_log( "DEBUG: " . __METHOD__ . " type=" . $type );
 		$this->type = $type;
 	}
 
-	public function __destruct() {
-	}
-
+	/**
+	 * Returns line type.
+	 *
+	 * @return string line type. values are Converter::TYPE_XXX.
+	 */
 	public function get_type() {
-		// error_log( "DEBUG: " . __METHOD__ . " type=" . $this->type );
 		return $this->type;
 	}
 
+	/**
+	 * Indicates the same Converter should be re-used.
+	 *
+	 * For example, in the <pre> tag, the 1st column "*" does not mean the
+	 * <li>. In <pre> tag, this method should return true until </pre>.
+	 *
+	 * @return boolean true when it should continue the same line type.
+	 */
 	public function keep_format() {
 		return false;
 	}
 
+	/**
+	 * Converts Codex line.
+	 *
+	 * It does not return the converted text, just stores into Result object.
+	 *
+	 * @param string $line should be converted.
+	 */
 	public function convert( $line ) {}
-	// public function close() {}
 
-/*
-	FilterMgr::initialize( $type );
-	FilterMgr::filter( $type, $line );
-	FilterMgr::get_oject( $type )->filter( $type, $line );
-*/
-
+	/**
+	 * Converts Codex or Media Wiki word format.
+	 *
+	 * @param string $line should be converted.
+	 * @return string converted text.
+	 */
 	protected function word_convert( $line ) {
-		$patterns = array( "/\\\'\\\'\\\'(.*?)\\\'\\\'\\\'/",
-                           "/\\\'\\\'(.*?)\\\'\\\'/",
-                           "/\\\'(.*?)\\\'/",
-                           '/\\\"(.*?)\\\"/',
-						   "/\'\'\'(.*?)\'\'\'/",
-                           "/\'\'(.*?)\'\'/",
-						   "/\'(.*?)\'/",
-						   '/\"(.*?)\"/',
-						   "/<tt>(.*?)<\/tt>/",
-                           "/\[\[Function[ _]Reference\/(.*?)\|(.*?)\]\]/",
-						   "/\[\[Category\:(.*?)\]\]/",
-						   "/\[\[Image\:(.*?)\]\]/",
-                           "/\[\[(((?!\]\]).)*?)\|(.*?)\]\]/",
-                           "/\[\[(.*?)\]\]/",
-                           "/\[http(.*?) (.*?)\]/",
-                           "/\[http(.*?)\]/" );
-        $replaces = array( '<strong>$1</strong>',
-                           '<em>$1</em>',
-                           '\'$1\'',
-                           '"$1"',
-						   '<strong>$1</strong>',
-						   '<em>$1</em>',
-						   '\'$1\'',
-						   '"$1"',
-						   '<code>$1</code>',
-                           '<a href="https://developer.wordpress.org/reference/functions/$1">$2</a>',
-						   'Category:$1',
-						   '<br /><strong>*** [TODO] Embed Image HERE !!! ***: $1 </strong><br />',
-						   '<a href="https://codex.wordpress.org/$1">$3</a>',
-						   '<a href="https://codex.wordpress.org/$1">$1</a>',
-                           '<a href="http$1">$2</a>',
-                           '<a href="http$1">http$1</a>');
+		$patterns[] = "/\\\'\\\'\\\'(.*?)\\\'\\\'\\\'/";
+		$replaces[] = '<strong>$1</strong>';
+
+		$patterns[] = "/\'\'\'(.*?)\'\'\'/";
+		$replaces[] = '<strong>$1</strong>';
+
+		$patterns[] = "/\\\'\\\'(.*?)\\\'\\\'/";
+		$replaces[] = '<em>$1</em>';
+
+		$patterns[] = "/\'\'(.*?)\'\'/";
+		$replaces[] = '<em>$1</em>';
+
+		$patterns[] = "/\\\'(.*?)\\\'/";
+		$replaces[] = "'$1'";
+
+		$patterns[] = "/\'(.*?)\'/";
+		$replaces[] = "'$1'";
+
+		$patterns[] = '/\\\"(.*?)\\\"/';
+		$replaces[] = '"$1"';
+
+		$patterns[] = '/\"(.*?)\"/';
+		$replaces[] = '"$1"';
+
+		$patterns[] = '/<tt>(.*?)<\/tt>/';
+		$replaces[] = '<code>$1</code>';
+
+		$patterns[] = "/\[\[Function[ _]Reference\/(.*?)\|(.*?)\]\]/";
+		$replaces[] = '<a href="https://developer.wordpress.org/reference/functions/$1">$2</a>';
+
+		$patterns[] = "/\[\[Category\:(.*?)\]\]/";
+		$replaces[] = 'Category:$1';
+
+		$patterns[] = "/\[\[Image\:(.*?)\]\]/";
+		$replaces[] = '<br /><strong>*** [TODO] Embed Image HERE !!! ***: $1 </strong><br />';
+
+		$patterns[] = "/\[\[(((?!\]\]).)*?)\|(.*?)\]\]/";
+		$replaces[] = '<a href="https://codex.wordpress.org/$1">$3</a>';
+
+		$patterns[] = "/\[\[(.*?)\]\]/";
+		$replaces[] = '<a href="https://codex.wordpress.org/$1">$1</a>';
+
+		$patterns[] = "/\[http(.*?) (.*?)\]/";
+		$replaces[] = '<a href="http$1">$2</a>';
+
+		$patterns[] = "/\[http(.*?)\]/";
+		$replaces[] = '<a href="http$1">http$1</a>';
+
         $new_line = preg_replace( $patterns, $replaces, $line );
         return $new_line;
     }
 }
 
-class PlainConverter extends Converter {
+/**
+ * Plain text converter class.
+ */
+class HelpHubPlainConverter extends HelpHubConverter implements PlainConverter {
+
+	/**
+	 * Converts Plain text.
+	 *
+	 * Encloses by <p> tag.
+	 *
+	 * @param string $line should be converted.
+	 */
 	public function convert( $line ) {
         $new_line = $this->word_convert( $line );
-        // $new_line = Adapter::convert( $this->get_type(), $line );
-        Result::get_object()->add( "<p>" . $new_line . "</p>" );
+        Result::get_result()->add( '<p>' . $new_line . '</p>' );
     }
 }
 
-class TitleConverter extends Converter {
-	public function convert( $line ) {
+/**
+ * Title line converter class.
+ */
+class HelpHubTitleConverter extends HelpHubConverter implements TitleConverter {
 
+	/**
+	 * Converts Title line.
+	 *
+	 * Encloses by <h1> - <h6> tag.
+	 *
+	 * @param string $line should be converted.
+	 */
+	public function convert( $line ) {
         $patterns = array( '/^======[ ]*(.*?)[ ]*======/',
                            '/^=====[ ]*(.*?)[ ]*=====/',
                            '/^====[ ]*(.*?)[ ]*====/',
@@ -123,177 +161,222 @@ class TitleConverter extends Converter {
                            '<h2>$1</h2>',
                            '<h1>$1</h1>' );
         $new_line = preg_replace( $patterns, $replaces, $line );
-
-		// $new_line = Adapter::convert( $this->get_type(), $line );
-        Result::get_object()->add( $new_line );
+        Result::get_result()->add( $new_line );
     }
 }
 
-class StarConverter extends Converter {
+/**
+ * Star line converter class.
+ */
+class HelpHubStarConverter extends HelpHubConverter implements StarConverter {
+
+	/**
+	 * Outputs <ul> tag from constructor.
+	 *
+	 * @param string $type line type. It must be Converter::TYPE_STAR.
+	 */
 	public function __construct( $type ) {
 		parent::__construct( $type );
-        Result::get_object()->add( '<ul>' );
+        Result::get_result()->add( '<ul>' );
     }
 
+	/**
+	 * Outputs </ul> tag from destructor.
+	 */
 	public function __destruct() {
-		// error_log( __METHOD__ . " DEBUG 01");
-		Result::get_object()->add( '</ul>' );
+		Result::get_result()->add( '</ul>' );
 	}
 
-	/*
-    public function close() {
-        Result::get_object()->add( '</ul>' );
-    }
-	*/
-
+	/**
+	 * Converts star line.
+	 *
+	 * Encloses by <li> tag.
+	 *
+	 * @param string $line should be converted.
+	 */
     public function convert( $line ) {
         $patterns = array( '/^\*[ ]*(.*?)/' );
         $replaces = array( '$1' );
         $new_line = preg_replace( $patterns, $replaces, $line );
         $new_line = $this->word_convert( $new_line );
-		// $new_line = Adapter::convert( $this->get_type(), $new_line );
-        Result::get_object()->add( '<li>' . $new_line . '</li>' );
+        Result::get_result()->add( '<li>' . $new_line . '</li>' );
     }
 }
 
-class SharpConverter extends Converter {
+/**
+ * Sharp line converter class.
+ */
+class HelpHubSharpConverter extends HelpHubConverter implements SharpConverter {
+
+	/**
+	 * Outputs <ol> tag from constructor.
+	 *
+	 * @param string $type line type. It must be Converter::TYPE_SHARP.
+	 */
 	public function __construct( $type ) {
 		parent::__construct( $type );
-        Result::get_object()->add( '<ol>' );
+        Result::get_result()->add( '<ol>' );
     }
 
+	/**
+	 * Outputs </ol> tag from destructor.
+	 */
 	public function __destruct() {
-		// error_log( __METHOD__ . " DEBUG 01");
-		Result::get_object()->add( '</ol>' );
+		Result::get_result()->add( '</ol>' );
 	}
 
-	/*
-    public function close() {
-        Result::get_object()->add( '</ol>' );
-    }
-	*/
-
+	/**
+	 * Converts star line.
+	 *
+	 * Encloses by <li> tag.
+	 *
+	 * @param string $line should be converted.
+	 */
     public function convert( $line ) {
         $patterns = array( '/^#[ ]*(.*?)/' );
         $replaces = array( '$1' );
         $new_line = preg_replace( $patterns, $replaces, $line );
         $new_line = $this->word_convert( $new_line );
-		// $new_line = Adapter::convert( $this->get_type(), $new_line );
-        Result::get_object()->add( '<li>' . $new_line . '</li>' );
+        Result::get_result()->add( '<li>' . $new_line . '</li>' );
     }
 }
 
-class ColonConverter extends Converter {
+/**
+ * Colon line converter class.
+ */
+class HelpHubColonConverter extends HelpHubConverter implements ColonConverter {
+
+	/**
+	 * Converts colon line.
+	 *
+	 * Indent the line.
+	 *
+	 * @param string $line should be converted.
+	 */
 	public function convert( $line ) {
         $patterns = array( '/^:(.*?)$/');
         $replaces = array( '<p style="padding-left: 30px;">$1</p>' );
         $new_line = preg_replace( $patterns, $replaces, $line );
         $new_line = $this->word_convert( $new_line );
-		// $new_line = Adapter::convert( $this->get_type(), $new_line );
-        Result::get_object()->add( $new_line );
+        Result::get_result()->add( $new_line );
     }
 }
 
-class SemicolonConverter extends Converter {
+/**
+ * Semicolon line converter class.
+ */
+class HelpHubSemicolonConverter extends HelpHubConverter implements SemicolonConverter {
+
+	/**
+	 * Converts semicolon line.
+	 *
+	 * ;title: content ... <strong>title</strong> LF indented content
+	 * ;title          ... <strong>title</strong>
+	 *
+	 * @param string $line should be converted.
+	 */
 	public function convert( $line ) {
-		// $patterns = array( '/^;(.*?):(.*)$/',
-		// NG --- $patterns = array( '/^;(((?!:\/\/).)*?):(.*)$/',
 		$patterns = array( '/^;(.*?):((?!\/\/).)(.*)$/',
                            '/^;[ ]*(.*)$/');
-		// $replaces = array( '1=$1,2=$2,3=$3,4=$4,5=$5',
-		// $replaces = array( '<strong>$1</strong>' . PHP_EOL . '<p style="padding-left: 30px;">$2</p>',
 		$replaces = array( '<strong>$1</strong>' . PHP_EOL . '<p style="padding-left: 30px;">$2$3</p>',
                            '<strong>$1</strong>' );
         $new_line = preg_replace( $patterns, $replaces, $line );
         $new_line = $this->word_convert( $new_line );
-		// $new_line = Adapter::convert( $this->get_type(), $new_line );
-        Result::get_object()->add( $new_line );
+        Result::get_result()->add( $new_line );
     }
 }
 
-class SpaceConverter extends Converter {
+/**
+ * Space line converter class.
+ */
+class HelpHubSpaceConverter extends HelpHubConverter implements SpaceConverter {
+
+	/**
+	 * Converts space line.
+	 *
+	 * Note: It always converts to [code language=php]. Migrator must adjust it.
+	 *
+	 * @param string $line should be converted.
+	 */
 	public function convert( $line ) {
         $patterns = array( '/^[ ]+(.+)$/' );
         $replaces = array( '[code language="php"]$1[/code]' );
         $new_line = preg_replace( $patterns, $replaces, $line );
-        Result::get_object()->add( $new_line );
+        Result::get_result()->add( $new_line );
     }
 }
 
-class PreConverter extends Converter {
+/**
+ * Pre line converter class.
+ */
+class HelpHubPreConverter extends HelpHubConverter implements PreConverter {
 	private $in_pre_tab = true;
 
+	/**
+	 * Indicates we should keep to use PreConverter for <pre> block.
+	 *
+	 * @return boolean true if we are in the <pre> blocks.
+	 */
     public function keep_format() {
         return $this->in_pre_tab;
     }
 
     /**
-     * <pre> line migrator
+     * Converts <pre> line.
      *
-     * if blocks are
+     * Four if & elses blocks mean
      * 1) <pre>text</pre>
      * 2) <pre>text
      * 3) text</pre>
      * 4) text (exists in between <pre> and </pre>)
      * Notice about $in_pre_tab is set to false when </pre> included line.
      *
-     * @param string $line wiki format text
+	 * @param string $line should be converted.
      */
     public function convert( $line ) {
 		if ( preg_match( '/^<pre[ ]?.*?>(.*?)<\/pre>/', $line ) ) {
             $code = preg_replace( '/^<pre[ ]?.*?>(.*?)<\/pre>/', '$1', $line);
-			// $new_line = '[code language="php"]' . htmlspecialchars( $code ) . '[/code]';
 			$new_line = '[code language="php"]' . $code . '[/code]';
             $this->in_pre_tab = false;
 		} elseif ( preg_match( '/^<pre[ ]?.*?>(.*)/', $line ) ) {
 			$code = preg_replace( '/^<pre[ ]?.*?>(.*)/', '$1', $line);
-			// $new_line = '[code language="php"]' . htmlspecialchars( $code );
 			$new_line = '[code language="php"]' . $code;
-	/*
-        if ( preg_match( '/^<pre>(.*?)<\/pre>/', $line ) ) {
-            $code = preg_replace( '/^<pre>(.*?)<\/pre>/', '$1', $line);
-            $new_line = "<pre>" . htmlspecialchars( $code ) . "</pre>";
-            $this->in_pre_tab = false;
-		} elseif ( preg_match( '/^<pre (.*?)>(.*?)<\/pre>/', $line ) ) {
-			$pre_tag = preg_replace( '/^<pre (.*?)>(.*?)<\/pre>/', '$1', $line);
-			$code = preg_replace( '/^<pre (.*?)>(.*?)<\/pre>/', '$2', $line);
-            $new_line = "<pre" . $pre_tag . ">" . htmlspecialchars( $code ) . "</pre>";
-            $this->in_pre_tab = false;
-		} elseif ( preg_match( '/^<pre>(.*)/', $line ) ) {
-            $code = preg_replace( '/^<pre>(.*)/', '$1', $line);
-            $new_line = "<pre>" . htmlspecialchars( $code );
-		} elseif ( preg_match( '/^<pre (.*?)>(.*)/', $line ) ) {
-			$pre_tag = preg_replace( '/^<pre (.*?)>(.*)/', '$1', $line);
-			$code = preg_replace( '/^<pre (.*?)>(.*)/', '$2', $line);
-            $new_line = "<pre" . $pre_tag . ">" . htmlspecialchars( $code );
-	*/
         } elseif ( preg_match( '/(.*?)<\/pre>/', $line ) ) {
             $code = preg_replace( '/(.*?)<\/pre>/', '$1', $line);
-			// $new_line = htmlspecialchars( $code ) . "</pre>";
-			// $new_line = htmlspecialchars( $code ) . "[/code]";
 			$new_line = $code . "[/code]";
             $this->in_pre_tab = false;
         } else {
-			// $new_line = htmlspecialchars( $line );
 			$new_line = $line;
         }
-        Result::get_object()->add( $new_line );
+        Result::get_result()->add( $new_line );
     }
 }
 
-class BraceConverter extends Converter {
+/**
+ * Breace line converter class.
+ */
+class HelpHubBraceConverter extends HelpHubConverter implements BraceConverter {
 	private $in_lang_locator = false;
 
+	/**
+	 * Converts brace line.
+	 *
+	 * Note: Language locator at the top of contents is not required in
+	 *       HelpHub. During $in_lang_locator is true, lines are ignored.
+	 *
+	 * @param string $line should be converted.
+	 */
     public function convert( $line ) {
         if ( preg_match( "/^\{\{Languages\|/", $line ) ) {
             $this->in_lang_locator = true;
         }
 
         if ( $this->in_lang_locator ) {
-            // NOP - Don't need output of $line
+			// Language locator is not required for HelpHub.
+			// $line is not output even if {{Languages|
         } else {
             $new_line = $line;
-            Result::get_object()->add( $new_line );
+            Result::get_result()->add( $new_line );
         }
 
         if ( preg_match( "/^\}\}/", $line ) ) {

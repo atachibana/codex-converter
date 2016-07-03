@@ -4,7 +4,7 @@
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%date [%logger] %message%newline" />
         </layout>
-        <param name="file" value="migrator.log" />
+        <param name="file" value="codex-converter.log" />
     </appender>
 
     <root>

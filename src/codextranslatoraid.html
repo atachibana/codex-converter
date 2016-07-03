@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+/**
+ * HTML page converts Codex to Japanese Codex
+ *
+ * This is pure web page. If you want to embed into your WordPress system
+ * refer page template "page-codextojacodex.php"
+ *
+ * @link      https://github.com/atachibana/codex-converter/
+ * @author		Akira Tachibana
+ */
+-->
+<html lang="ja">
+<head>
+  <title>WordPress Codex Translator Aid (Beta)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="description" content="WordPress Codex Translator Aid" />
+	<meta name="keywords" content="wordpress, codex" />
+	<meta name="author" content="Akira Tachibana" />
+  <link rel="stylesheet" href="codex-converter.css" />
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="codex-translator-aid.js"></script>
+</head>
+<body>
+  <h1>WordPress Codex Translator Aid (Beta)</h1>
+  <p id="description">By Akira Tachibana from <a href="http://unofficialtokyo.com" target="_blank">unofficialtokyo.com</a>,
+  <a href="https://github.com/atachibana/codex-converter/">GitHub</a></p>
+
+  <div id="codex-converter">
+		<p id="msg-area"><br /></p>
+
+		<div id="codex-converter-main">
+      <div class="sub-panel">
+        <textarea class="codetext" id="codex"
+        placeholder="Cut &amp; Paste Codex source here and click the button."></textarea>
+      </div> <!-- .sub-panel -->
+
+			<div id="center-panel">
+				<input type="button" id="migrate" value=" >> " /><br />
+				<span id="loading"></span>
+			</div> <!-- .center-panel -->
+
+      <div class="sub-panel">
+        <textarea class="codetext" id="convertd-text"></textarea>
+      </div> <!-- .sub-panel -->
+    </div> <!-- .codex-converter-main -->
+
+	</div> <!-- .codex-converter -->
+
+</body>
+</html>

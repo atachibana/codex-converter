@@ -14,14 +14,14 @@
         $('#migrate').click(function()
         {
             var data = {request : $('#codex').val()};
-            $('#helphub').val("");
+            $('#convertd-text').val("");
             $.ajax({
                 type: "POST",
-                url: "web-codextoja.php",
+                url: "ws-codextoja.php",
                 data: data,
             }).done(function(data, dataType) {
                 // alert(data);
-                $('#helphub').val(data);
+                $('#convertd-text').val(data);
 
             }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
                 alert('Error : ' + errorThrown);
@@ -43,7 +43,7 @@
             <input id="migrate" value=" >> " type="submit" />
         </form>
       <div class="sub-panel">
-        <textarea class="codetext" id="helphub"></textarea>
+        <textarea class="codetext" id="convertd-text"></textarea>
       </div>
     </div>
 </body>

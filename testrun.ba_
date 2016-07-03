@@ -1,3 +1,2 @@
-@rem phpunit --bootstrap src/class-codextohelphub.php tests/CodexToHelpHubTest
-phpunit --bootstrap src/class-codex-converter.php tests/CodexConverterHelpHubTest
-@rem phpunit --bootstrap src/class-codex-converter.php tests/CodexConverterJaCodexTest
+call phpunit --bootstrap src/class-codex.php tests/CodexHelpHubTest
+call phpunit --bootstrap src/class-codex.php tests/CodexJaCodexTest
