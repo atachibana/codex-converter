@@ -118,13 +118,13 @@ abstract class HelpHubConverter implements Converter {
 		}
 
 		// <nowiki><br /></nowiki> -> <pre>&lt;br /&gt;</pre>
-		$patterns = [ '/<nowiki>/', '/<\/nowiki>/' ];
-		$replaces = [ 'atachibana-begin', 'atachibana-end' ];
+		$patterns = array( '/<nowiki>/', '/<\/nowiki>/' );
+		$replaces = array( 'atachibana-begin', 'atachibana-end' );
 		$temp_line = preg_replace( $patterns, $replaces, $line, -1, $count );
 		if ( 0 < $count ) {
 			$temp_line = htmlspecialchars( $temp_line );
-			$patterns = [ '/atachibana-begin/', '/atachibana-end/' ];
-			$replaces = [ '<pre>', '</pre>' ];
+			$patterns = array( '/atachibana-begin/', '/atachibana-end/' );
+			$replaces = array( '<pre>', '</pre>' );
 			$new_line = preg_replace( $patterns, $replaces, $temp_line );
 			return $new_line;
 		}
