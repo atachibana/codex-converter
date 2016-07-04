@@ -112,8 +112,23 @@ abstract class HelpHubConverter implements Converter {
 		$patterns[] = "/\[http(.*?)\]/";
 		$replaces[] = '<a href="http$1">http$1</a>';
 
-        $new_line = preg_replace( $patterns, $replaces, $line );
-        return $new_line;
+        $new_line = preg_replace( $patterns, $replaces, $line, -1, $count );
+		if ( 0 < $count ) {
+			return $new_line;
+		}
+
+		// <nowiki><br /></nowiki> -> <pre>&lt;br /&gt;</pre>
+		$patterns = [ '/<nowiki>/', '/<\/nowiki>/' ];
+		$replaces = [ 'atachibana-begin', 'atachibana-end' ];
+		$temp_line = preg_replace( $patterns, $replaces, $line, -1, $count );
+		if ( 0 < $count ) {
+			$temp_line = htmlspecialchars( $temp_line );
+			$patterns = [ '/atachibana-begin/', '/atachibana-end/' ];
+			$replaces = [ '<pre>', '</pre>' ];
+			$new_line = preg_replace( $patterns, $replaces, $temp_line );
+			return $new_line;
+		}
+		return $line;
     }
 }
 

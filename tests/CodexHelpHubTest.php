@@ -17,7 +17,7 @@ class CodexHelpHubTest extends TestCase {
 
     public function test02_Grammer() {
         $codex_to = new Codex( Codex::TO_HELPHUB );
-        // In Logger class, display_errors is turned off. 
+        // In Logger class, display_errors is turned off.
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = file( "tests/1_test.txt", FILE_IGNORE_NEW_LINES );
@@ -92,5 +92,17 @@ class CodexHelpHubTest extends TestCase {
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
+
+    public function test08_NoWiki() {
+        $codex_to = new Codex( Codex::TO_HELPHUB );
+        // In Logger class, display_errors is turned off.
+        // To show error, turn on here.
+        ini_set( 'display_errors', 'On' );
+        $in = array( 'converted to <nowiki><br /></nowiki>' );
+        $expected = array( '<p>converted to <pre>&lt;br /&gt;</pre></p>' );
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+    }
+
 
 }

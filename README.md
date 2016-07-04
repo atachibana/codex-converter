@@ -79,8 +79,8 @@ Codex Translater Aid Tool (Beta):
 
 ```
 README.md                         readme (This file)
-testrun.ba_                       (Windows) phpunit test kicker
-run.ba_                           (Windows) command line HelpHub launcher
+testrun.bat                       (Windows) phpunit test kicker
+run.bat                           (Windows) command line HelpHub launcher
 
 src/
   class-codex.php                 Codex class (main)
@@ -169,6 +169,10 @@ $out_array = $codex_to->convert( $in_array );
 Akira Tachibana (http://unofficialtokyo.com)
 
 # History
+## Version 1.0.1 (4/Jul/2016)
+* &lt;nowiki> support
+* fixed Windows batch file extension
+
 ## Version 1.0 (3/Jul/2016)
 * Release of Codex to Help Hub
 * Beta of Codex Translator Aid

@@ -119,36 +119,32 @@ class JaCodexTitleConverter extends JaCodexConverter implements TitleConverter {
 	 * @param string $line should be converted.
 	 */
 	public function convert( $line ) {
+		$patterns[] = '/==[ ]*Description[ ]*==/';
+		$replaces[] = '== 説明<span id="Description"></span> ==';
 
-		$patterns = array();
-		$replaces = array();
+		$patterns[] = '/==[ ]*Usage[ ]*==/';
+		$replaces[] = '== 使い方<!--Usage--> ==';
 
-		$patterns[0] = '/==[ ]*Description[ ]*==/';
-		$replaces[0] = '== 説明<span id="Description"></span> ==';
+		$patterns[] = '/==[ ]*Return Values[ ]*==/';
+		$replaces[] = '== 戻り値<!--Return Values--> ==';
 
-		$patterns[1] = '/==[ ]*Usage[ ]*==/';
-		$replaces[1] = '== 使い方<!--Usage--> ==';
+		$patterns[] = '/==[ ]*Examples[ ]*==/';
+		$replaces[] = '== 用例<!--Examples--> ==';
 
-		$patterns[2] = '/==[ ]*Return Values[ ]*==/';
-		$replaces[2] = '== 戻り値<!--Return Values--> ==';
+		$patterns[] = '/==[ ]*Notes[ ]*==/';
+		$replaces[] = '== 注<!--Notes--> ==';
 
-		$patterns[3] = '/==[ ]*Examples[ ]*==/';
-		$replaces[3] = '== 用例<!--Examples--> ==';
+		$patterns[] = '/==[ ]*Change Log[ ]*==/';
+		$replaces[] = '== 変更履歴<!--Change Log--> ==';
 
-		$patterns[4] = '/==[ ]*Notes[ ]*==/';
-		$replaces[4] = '== 注<!--Notes--> ==';
+		$patterns[] = '/==[ ]*Source File[ ]*==/';
+		$replaces[] = '== ソースファイル<!--Source File--> ==';
 
-		$patterns[5] = '/==[ ]*Change Log[ ]*==/';
-		$replaces[5] = '== 変更履歴<!--Change Log--> ==';
+		$patterns[] = '/==[ ]*Related[ ]*==/';
+		$replaces[] = '== 関連<!--Related--> ==';
 
-		$patterns[6] = '/==[ ]*Source File[ ]*==/';
-		$replaces[6] = '== ソースファイル<!--Source File--> ==';
-
-		$patterns[7] = '/==[ ]*Related[ ]*==/';
-		$replaces[7] = '== 関連<!--Related--> ==';
-
-		$patterns[8] = '/==[ ]*Parameters[ ]*==/';
-		$replaces[8] = '== パラメータ<!--Parameters--> ==';
+		$patterns[] = '/==[ ]*Parameters[ ]*==/';
+		$replaces[] = '== パラメータ<!--Parameters--> ==';
 
 		// If we could match in above rules, then return.
 		$new_line = preg_replace( $patterns, $replaces, $line, -1, $count );
