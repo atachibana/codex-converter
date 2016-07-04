@@ -99,7 +99,7 @@ class CodexHelpHubTest extends TestCase {
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = array( 'converted to <nowiki><br /></nowiki>' );
-        $expected = array( '<p>converted to <pre>&lt;br /&gt;</pre></p>' );
+        $expected = array( '<p>converted to <code>&lt;br /&gt;</code></p>' );
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }

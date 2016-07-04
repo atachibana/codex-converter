@@ -124,7 +124,7 @@ abstract class HelpHubConverter implements Converter {
 		if ( 0 < $count ) {
 			$temp_line = htmlspecialchars( $temp_line );
 			$patterns = array( '/atachibana-begin/', '/atachibana-end/' );
-			$replaces = array( '<pre>', '</pre>' );
+			$replaces = array( '<code>', '</code>' );
 			$new_line = preg_replace( $patterns, $replaces, $temp_line );
 			return $new_line;
 		}
