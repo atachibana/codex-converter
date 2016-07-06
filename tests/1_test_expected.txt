@@ -13,8 +13,10 @@
 </ol>
 <p style="padding-left: 30px;">Indented text</p>
 <p>Sentence can have embedded <code>mono space</code>.</p>
-[code language="php"]x = 10;  // indent is program[/code]
-[code language="php"]y = 20;  // indent is program[/code]
+[code language="php"]
+x = 10;  // indent is program
+y = 20;  // indent is program
+[/code]
 <p>Another program example:</p>
 [code language="php"]
 #include <stdio.h>
@@ -31,4 +33,8 @@ int main(int argc, char* argv[])
 <h4>Test of Codex4</h4>
 <h5>Test of Codex5</h5>
 <h6>Test of Codex6</h6>
+[code language="php"]
+http://rpc.pingomatic.com
+http://rpc.twingly.com
+[/code]
 <p>Category:WordPress Installation</p>

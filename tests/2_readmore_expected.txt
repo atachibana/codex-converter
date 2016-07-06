@@ -38,7 +38,9 @@ his face and said
 <h2>Read More Techniques</h2>
 <p>The parameters within the template tag <a href="https://codex.wordpress.org/Template_Tags/the_content">the_content()</a> are as follows:</p>
 <p></p>
-[code language="php"]<?php the_content( $more_link_text , $strip_teaser ); ?>[/code]
+[code language="php"]
+<?php the_content( $more_link_text , $strip_teaser ); ?>
+[/code]
 <p></p>
 <p>The <strong>$more_link_text</strong> sets the link text like "Read More".  The second one, <strong>$strip_teaser</strong>, sets whether or not the teaser part or excerpt part before the more text should be stripped (TRUE) or included (FALSE). The default is FALSE, which shows the teaser part.</p>
 <p></p>

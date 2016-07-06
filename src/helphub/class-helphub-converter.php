@@ -307,6 +307,23 @@ class HelpHubSemicolonConverter extends HelpHubConverter implements SemicolonCon
 class HelpHubSpaceConverter extends HelpHubConverter implements SpaceConverter {
 
 	/**
+	 * Outputs [code language="php"] tag from constructor.
+	 *
+	 * @param string $type line type. It must be Converter::TYPE_SHARP.
+	 */
+	public function __construct( $type ) {
+		parent::__construct( $type );
+        Result::get_result()->add( '[code language="php"]' );
+    }
+
+	/**
+	 * Outputs [/code] tag from destructor.
+	 */
+	public function __destruct() {
+		Result::get_result()->add( '[/code]' );
+	}
+
+	/**
 	 * Converts space line.
 	 *
 	 * Note: It always converts to [code language=php]. Migrator must adjust it.
@@ -315,7 +332,7 @@ class HelpHubSpaceConverter extends HelpHubConverter implements SpaceConverter {
 	 */
 	public function convert( $line ) {
         $patterns = array( '/^[ ]+(.+)$/' );
-        $replaces = array( '[code language="php"]$1[/code]' );
+        $replaces = array( '$1' );
         $new_line = preg_replace( $patterns, $replaces, $line );
         Result::get_result()->add( $new_line );
     }

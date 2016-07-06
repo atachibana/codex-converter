@@ -31,4 +31,6 @@ int main(int argc, char* argv[])
 ====Test of Codex4 ====
 =====Test of Codex5 =====
 ======Test of Codex6 ======
+ http://rpc.pingomatic.com
+ http://rpc.twingly.com
 [[Category:WordPress Installation]]
