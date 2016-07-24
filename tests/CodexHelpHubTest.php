@@ -86,7 +86,7 @@ class CodexHelpHubTest extends TestCase {
         // In Logger class, display_errors is turned off.
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
-        $in = array( ";URL for [http://purl.org/rss/1.0/  RDF/RSS 1.0 feed] :<tt>&lt;?php bloginfo('rdf_url'); ?></tt>" );
+        $in = array( ";URL for [http://purl.org/rss/1.0/  RDF/RSS 1.0 feed] :<tt><?php bloginfo('rdf_url'); ?></tt>" );
         $expected = array( '<strong>URL for <a href="http://purl.org/rss/1.0/"> RDF/RSS 1.0 feed</a> </strong>
 <p style="padding-left: 30px;"><code>&lt;?php bloginfo(\'rdf_url\'); ?></code></p>' );
         $out = $codex_to->convert( $in );
@@ -99,7 +99,7 @@ class CodexHelpHubTest extends TestCase {
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = array( 'converted to <nowiki><br /></nowiki>' );
-        $expected = array( '<p>converted to <code>&lt;br /&gt;</code></p>' );
+        $expected = array( '<p>converted to <code>&lt;br /></code></p>' );
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
@@ -125,5 +125,17 @@ class CodexHelpHubTest extends TestCase {
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
+
+    public function test11_TTandA() {
+        $codex_to = new Codex( Codex::TO_HELPHUB );
+        // In Logger class, display_errors is turned off.
+        // To show error, turn on here.
+        ini_set( 'display_errors', 'On' );
+        $in = "<tt>[[Template Tags/the_content|the_content()]]</tt>";
+        $expected = "<p><a href=\"https://codex.wordpress.org/Template Tags/the_content\"><code>the_content()</code></a></p>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+    }
+
 
 }
