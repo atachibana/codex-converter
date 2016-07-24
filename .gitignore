@@ -52,3 +52,4 @@ localdeploy.bat
 log4php
 src/codex-converter.log
 src/functions.php
+killme*

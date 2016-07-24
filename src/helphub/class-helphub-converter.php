@@ -69,6 +69,7 @@ abstract class HelpHubConverter implements Converter {
 	 * @return string converted text.
 	 */
 	protected function word_convert( $line ) {
+
 		$patterns[] = "/\\\'\\\'\\\'(.*?)\\\'\\\'\\\'/";
 		$replaces[] = '<strong>$1</strong>';
 
@@ -93,9 +94,6 @@ abstract class HelpHubConverter implements Converter {
 		$patterns[] = '/\"(.*?)\"/';
 		$replaces[] = '"$1"';
 
-		$patterns[] = '/<tt>(.*?)<\/tt>/';
-		$replaces[] = '<code>$1</code>';
-
 		$patterns[] = "/\[\[Function[ _]Reference\/(.*?)\|(.*?)\]\]/";
 		$replaces[] = '<a href="https://developer.wordpress.org/reference/functions/$1">$2</a>';
 
@@ -117,23 +115,23 @@ abstract class HelpHubConverter implements Converter {
 		$patterns[] = "/\[http(.*?)\]/";
 		$replaces[] = '<a href="http$1">http$1</a>';
 
-        $new_line = preg_replace( $patterns, $replaces, $line, -1, $count );
-		if ( 0 < $count ) {
-			return $new_line;
-		}
+		$new_line = preg_replace( $patterns, $replaces, $line );
 
-		// <nowiki><br /></nowiki> -> <pre>&lt;br /&gt;</pre>
-		$patterns = array( '/<nowiki>/', '/<\/nowiki>/' );
-		$replaces = array( 'atachibana-begin', 'atachibana-end' );
-		$temp_line = preg_replace( $patterns, $replaces, $line, -1, $count );
-		if ( 0 < $count ) {
-			$temp_line = htmlspecialchars( $temp_line );
-			$patterns = array( '/atachibana-begin/', '/atachibana-end/' );
-			$replaces = array( '<code>', '</code>' );
-			$new_line = preg_replace( $patterns, $replaces, $temp_line );
-			return $new_line;
-		}
-		return $line;
+		$patterns = "/<tt><a href(.*?)>(.*?)<\/a><\/tt>/";
+		$new_line = preg_replace_callback( $patterns,
+						function( $matches ) {
+							return "<a href" . $matches[1] . "><code>" . preg_replace( "/</", "&lt;", $matches[2] ) . "</code></a>";
+						},
+						$new_line );
+
+ 		$pattern = array( "/<tt><nowiki>(.*?)<\/nowiki><\/tt>/", "/<tt>(.*?)<\/tt>/", "/<nowiki>(.*?)<\/nowiki>/" );
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<code>" . preg_replace( "/</", "&lt;", $matches[1] ) . "</code>" ;
+						},
+						$new_line );
+
+		return $new_line;
     }
 }
 

@@ -37,3 +37,4 @@ int main(int argc, char* argv[])
  http://rpc.twingly.com
 [[Category:WordPress Installation]]
 {{Versions}}
+<tt><title></tt> was changed.

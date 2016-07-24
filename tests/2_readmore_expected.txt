@@ -9,7 +9,7 @@
 </ul>
 <p></p>
 <ul>
-<li>The second, by replacing the <code><a href="https://codex.wordpress.org/Template Tags/the_content">the_content()</a></code> template tag with <code><a href="https://codex.wordpress.org/Template Tags/the_excerpt">the_excerpt()</a></code>.</li>
+<li>The second, by replacing the <a href="https://codex.wordpress.org/Template Tags/the_content"><code>the_content()</code></a> template tag with <a href="https://codex.wordpress.org/Template Tags/the_excerpt"><code>the_excerpt()</code></a>.</li>
 </ul>
 <p></p>
 <p>In both cases, if you have set anything in the Excerpt meta box on the post editor screen, that text will be used. Otherwise, the excerpt will be automatically trimmed.</p>
@@ -52,7 +52,7 @@ his face and said
 [code language="php"]the_content( '', TRUE );[/code]
 <p></p>
 <ul>
-<li>Include <code><nowiki><!--noteaser--></nowiki></code> in the post text, immediately after the <code><nowiki><!--more-->.</nowiki></code></li>
+<li>Include <code>&lt;!--noteaser--></code> in the post text, immediately after the <code>&lt;!--more-->.</code></li>
 </ul>
 <p></p>
 <h3>Prevent Page Scroll When Clicking the More Link</h3>
@@ -97,7 +97,7 @@ function new_excerpt_more($more) {
 add_filter('excerpt_more', 'new_excerpt_more');
 [/code]
 <p></p>
-<p>If you are using a <a href="https://codex.wordpress.org/Child Themes">Child Theme</a>, the above code will not work without modification if the parent theme has its own filters setting its own "more" link. You will need to use the <code><a href="https://developer.wordpress.org/reference/functions/remove filter">remove_filter()</a></code> function to remove the parent's filters for yours to work. The problem is your functions.php file is loaded before the parent's functions.php, so at the time of your file's execution, there is no filter to remove yet, and your <code>remove_filter()</code> code will fail without warning.</p>
+<p>If you are using a <a href="https://codex.wordpress.org/Child Themes">Child Theme</a>, the above code will not work without modification if the parent theme has its own filters setting its own "more" link. You will need to use the <a href="https://developer.wordpress.org/reference/functions/remove filter"><code>remove_filter()</code></a> function to remove the parent's filters for yours to work. The problem is your functions.php file is loaded before the parent's functions.php, so at the time of your file's execution, there is no filter to remove yet, and your <code>remove_filter()</code> code will fail without warning.</p>
 <p></p>
 <p>The key is to put your <code>remove_filter()</code> code in a function that executes from an <a href="https://codex.wordpress.org/Plugin API/Action Reference">action hook</a> that triggers after the parent theme is loaded. The following code is an example of the additional code needed to get the above code to work from a child theme of the parent theme <i><a href="https://codex.wordpress.org/Twenty Eleven">Twenty Eleven</a></i>. You will need to examine your actual parent theme's code for the correct parameters in the <code>remove_filter()</code> code, they must exactly match the <code>add_filter()</code> parameters used by the parent.</p>
 [code language="php"]
@@ -112,7 +112,7 @@ add_action( 'after_setup_theme', 'child_theme_setup' );
 <h2>Customizing the "more&hellip;" text</h2>
 <p>Seeing that you know how it works, now look at how we can make this little invitation to continue reading your post be more inviting.</p>
 <p></p>
-<p>By design, the <code><a href="https://codex.wordpress.org/Template Tags/the_content">the_content()</a></code> template tag includes a parameter for setting the text to be displayed in the the "more&hellip;" link which allows you to continue reading.</p>
+<p>By design, the <a href="https://codex.wordpress.org/Template Tags/the_content"><code>the_content()</code></a> template tag includes a parameter for setting the text to be displayed in the the "more&hellip;" link which allows you to continue reading.</p>
 <p></p>
 <p>By default, it looks like this:</p>
 <p></p>
@@ -144,7 +144,7 @@ your seat? Click here to solve the mystery.</span>'); ?>[/code]
 <p></p>
 <p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">&raquo; &raquo; &raquo; &raquo;</a></div></p>
 <p></p>
-<p>If you want to include the title of the post in the <strong>more</strong> text, use <code><a href="https://codex.wordpress.org/Template Tags/the_title">the_title()</a></code> template tag::</p>
+<p>If you want to include the title of the post in the <strong>more</strong> text, use <a href="https://codex.wordpress.org/Template Tags/the_title"><code>the_title()</code></a> template tag::</p>
 <p></p>
 [code language="php"]<?php the_content("...continue reading the story
 called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?>[/code]
@@ -153,11 +153,11 @@ called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?>[/code]
 <p></p>
 <h3>Having a custom text for each post</h3>
 <p></p>
-<p>Although <code>the_content()</code> is usually called from the template with a standard text as described above, it is possible to have an individual text for certain posts. In the text editor, simply write <code><nowiki><!--more Your custom text --></nowiki></code>.</p>
+<p>Although <code>the_content()</code> is usually called from the template with a standard text as described above, it is possible to have an individual text for certain posts. In the text editor, simply write <code>&lt;!--more Your custom text --></code>.</p>
 <p></p>
 <p>So, you may have something like this:</p>
 <p></p>
-<p><code><nowiki><!--more But wait, there's more! --></nowiki></code></p>
+<p><code>&lt;!--more But wait, there's more! --></code></p>
 <p></p>
 <h3>Adding An Image</h3>
 <p>The design possibilities with CSS are practically unlimited, and WordPress allows you to use images in many of their <a href="https://codex.wordpress.org/Template Tags">Template Tags</a>, including the <code>more</code> tag.  To add an image, there are two ways to do it.  Begin with the most simple -- listing it in <code>the_content()</code> template tag.</p>
