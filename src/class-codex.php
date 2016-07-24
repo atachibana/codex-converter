@@ -9,6 +9,7 @@
  */
 require_once( 'class-result.php' );
 require_once( 'interface-converter.php' );
+require_once( 'class-util.php' );
 
 /**
  * Only for a removal of a external library dependency, class-logger.php was
@@ -63,15 +64,20 @@ class Codex {
      * 1) Previous Converter says it should be kept (ex. in the <pre> tag), or
      * 2) Previous Converter's type and the current line type are the same
      *
-     * @param array $data_array Input data
-     * @return array migrated data
+     * If input type is string, split by "\n" and passed to the main logic.
+     * Return value is also backed to string separated by "\n". Pre-processor
+     * of Codex Template enhancement is supported only for string input type.
+     *
+     * @param array or string $data Input data
+     * @return array or string of migrated data
      */
-    public function convert( $data_array ) {
+    public function convert( $data ) {
+        $data_array = $this->input_preprocess( $data );
         $this->logger->info( __METHOD__ . " >>> input : " . implode( ",", $data_array ) );
 
         $converter = null;
         foreach( $data_array as $line ) {
-            $type = $this->get_type( $line );
+            $type = Util::get_type( $line );
 
             if ( $converter ) {
                 // previous Converter says it should be kept or the previous
@@ -83,11 +89,11 @@ class Codex {
                     // explicitly calls destructor. Otherwise, the order of end
                     // tag and start tag must be wrong.
                     unset( $converter );
-                    $converter = $this->get_converter( $type );
+                    $converter = Util::get_converter( $this->converter_type, $type );
                 }
             } else {
                 // 1st line.
-                $converter = $this->get_converter( $type );
+                $converter = Util::get_converter( $this->converter_type, $type );
             }
 
             $this->logger->trace( __METHOD__ . ' [' . $converter->get_type() . '] ' . $line );
@@ -102,57 +108,37 @@ class Codex {
 
         $result_array = Result::get_result()->getall_and_clear();
         $this->logger->info( __METHOD__ . " <<< return : " . implode( ",", $result_array ) );
-        return $result_array;
-    }
 
-    /**
-     * Investigates line type from first column or pattern
-     *
-     * @param string $line wiki format text
-     * @return string migrator class name. Converter::TYPE_XXX
-     */
-    private function get_type( $line ) {
-        $patterns[] = '/^=.*/';
-        $replaces[] = Converter::TYPE_TITLE;
-
-        $patterns[] = '/^\*.*/';
-        $replaces[] = Converter::TYPE_STAR;
-
-        $patterns[] = '/^#.*/';
-        $replaces[] = Converter::TYPE_SHARP;
-
-        $patterns[] = '/^:.*/';
-        $replaces[] = Converter::TYPE_COLON;
-
-        $patterns[] = '/^;.*/';
-        $replaces[] = Converter::TYPE_SEMICOLON;
-
-        $patterns[] = '/^[ ]+(.+)$/';
-        $replaces[] = Converter::TYPE_SPACE;
-
-        $patterns[] = '/^<pre[ >].*/';
-        $replaces[] = Converter::TYPE_PRE;
-
-        $patterns[] = '/^(\{\{|\}\}).*/';
-        $replaces[] = Converter::TYPE_BRACE;
-
-        $type = preg_replace( $patterns, $replaces, $line, -1, $count );
-        if ( 0 == $count ) {
-            $type = Converter::TYPE_PLAIN;
+        if ( is_array ($data) ) {
+            return $result_array;
+        } else {
+            return implode( "\n", $result_array );
         }
-        return $type;
     }
 
     /**
-     * Instantiates Converter object.
+     * Converts input data to array
      *
-     * @param string $type Converter::TYPE_XXX
-     * @return Converter object
+     * From input data, converts line end to "\n" and converts to array.
+     *
+     * @param string|array $data input data
+     * @return array data
      */
-    private function get_converter( $type ) {
-		$classname = $this->converter_type . $type;
-		return new $classname( $type );
-	}
+    private function input_preprocess( $data ) {
+        $data_array = null;
+        if ( is_array( $data ) ) {
+            $data_array = $data;
+        } else {
+            // if magic_quotes is on, double quotation and some characters are
+            // automatically escaped. Strip them.
+            if ( get_magic_quotes_gpc() ) {
+                $data = stripslashes( $data );
+            }
+            $cr = array( "\r\n", "\r" );
+            $data = str_replace( $cr, "\n", $data );
+            $data_array = explode( "\n", $data );
+        }
+        return $data_array;
+    }
 }
-
 ?>

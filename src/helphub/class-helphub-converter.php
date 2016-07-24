@@ -19,6 +19,11 @@ abstract class HelpHubConverter implements Converter {
 	private $type = "";
 
 	/**
+	 * Keeps sub converter for nested elements such as sub list.
+	 */
+	protected $sub_converter = null;
+
+	/**
 	 * Initializes $type by input line type.
 	 *
 	 * @param string $type line type. values are Converter::TYPE_XXX.
@@ -199,6 +204,9 @@ class HelpHubStarConverter extends HelpHubConverter implements StarConverter {
 	 * Outputs </ul> tag from destructor.
 	 */
 	public function __destruct() {
+		if ( $this->sub_converter ) {
+			unset( $this->sub_converter );
+		}
 		Result::get_result()->add( '</ul>' );
 	}
 
@@ -213,9 +221,38 @@ class HelpHubStarConverter extends HelpHubConverter implements StarConverter {
         $patterns = array( '/^\*[ ]*(.*?)/' );
         $replaces = array( '$1' );
         $new_line = preg_replace( $patterns, $replaces, $line );
-        $new_line = $this->word_convert( $new_line );
-        Result::get_result()->add( '<li>' . $new_line . '</li>' );
-    }
+
+		// TODO: Refactoring with class-codex.php unification
+		$sub_type = Util::get_type( $new_line );
+
+		if ( $this->sub_converter ) {
+			// previous Converter says it should be kept or the previous
+			// line type and current line type is the same
+			if ( $sub_type == $this->sub_converter->get_type() ) {
+					 // NOP. same Converter object is re-used.
+			} else {
+				// explicitly calls destructor. Otherwise, the order of end
+				// tag and start tag must be wrong.
+				unset( $this->sub_converter );
+				if ( ( $sub_type == Converter::TYPE_STAR ) || ( $sub_type == Converter::TYPE_STAR ) ) {
+					$this->sub_converter = Util::get_converter( Codex::TO_HELPHUB, $sub_type );
+				} else {
+					$this->sub_converter = null;
+				}
+			}
+		} else {
+			if ( ( $sub_type == Converter::TYPE_STAR ) || ( $sub_type == Converter::TYPE_STAR ) ) {
+				$this->sub_converter = Util::get_converter( Codex::TO_HELPHUB, $sub_type );
+			}
+		}
+
+		if ( $this->sub_converter ) {
+			$this->sub_converter->convert( $new_line );
+		} else {
+			$new_line = $this->word_convert( $new_line );
+	        Result::get_result()->add( '<li>' . $new_line . '</li>' );
+		}
+	}
 }
 
 /**

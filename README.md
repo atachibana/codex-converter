@@ -66,7 +66,7 @@ To use log4php
 2. rename sample-log-config.xml to log-config.xml
 
 
-# Limitation
+# Restriction
 
 Codex to HelpHub:
 * `<pre>` tag or line begin with space character is always converted to `[code language="php"]`.
@@ -88,6 +88,7 @@ src/
   ws-codex-converter.php          receiver
   class-logger.php                Own poor Logger
   class-result.php                Output result keeper            
+  class-util.php                  Utility handles line type
   codex-converter.css             stylesheet
   loader.gif                      animated loader
   sample-functions.php            sample functions.php (part of)     
@@ -153,7 +154,7 @@ If you want to create your own converter, follow below steps:
 
 ```
 $codex_to = new Codex( 'KoCodex' );
-$out_array = $codex_to->convert( $in_array );
+$output_data = $codex_to->convert( $input_data );
 
 ```
 
@@ -169,6 +170,13 @@ $out_array = $codex_to->convert( $in_array );
 Akira Tachibana (http://unofficialtokyo.com)
 
 # History
+## Version 1.1 (24/Jul/2016)
+* `convert()` handles string input/output.
+* Line types handling routines were moved to new `Util` class.
+* `TESTRUN` takes filter options.
+* Fix: `**` sub list support (#9)
+* Fix: multiple spaces only lines are not converted to code anymore.
+
 ## Version 1.0.1 (4/Jul/2016)
 * &lt;nowiki> support
 * fixed Windows batch file extension

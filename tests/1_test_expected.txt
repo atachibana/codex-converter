@@ -5,6 +5,10 @@
 <ul>
 <li>List 1</li>
 <li>List 2</li>
+<ul>
+<li>Sub List 1</li>
+<li>Sub List 2</li>
+</ul>
 </ul>
 <p>Line begins with sharp is numbered list</p>
 <ol>

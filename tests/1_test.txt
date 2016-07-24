@@ -8,6 +8,8 @@ This is test data of Codex to HelpHub. For more details, please refer [https://g
 Line begins with star is list
 * List 1
 * List 2
+** Sub List 1
+** Sub List 2
 Line begins with sharp is numbered list
 # Numbered List 1
 # Numbered List 2
