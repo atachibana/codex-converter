@@ -36,3 +36,4 @@ int main(int argc, char* argv[])
  http://rpc.pingomatic.com
  http://rpc.twingly.com
 [[Category:WordPress Installation]]
+{{Versions}}

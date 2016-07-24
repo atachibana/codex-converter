@@ -436,6 +436,12 @@ class HelpHubBraceConverter extends HelpHubConverter implements BraceConverter {
 	 * @param string $line should be converted.
 	 */
     public function convert( $line ) {
+		if ( preg_match( "/^\{\{Versions\}\}[ ]*$/", $line ) ) {
+			$new_line = '<p>See also: other <a href="https://codex.wordpress.org/WordPress_Versions">WordPress Versions</a></p>';
+            Result::get_result()->add( $new_line );
+			return;
+        }
+
         if ( preg_match( "/^\{\{Languages\|/", $line ) ) {
             $this->in_lang_locator = true;
         }

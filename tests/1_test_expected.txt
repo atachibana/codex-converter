@@ -42,3 +42,4 @@ http://rpc.pingomatic.com
 http://rpc.twingly.com
 [/code]
 <p>Category:WordPress Installation</p>
+<p>See also: other <a href="https://codex.wordpress.org/WordPress_Versions">WordPress Versions</a></p>

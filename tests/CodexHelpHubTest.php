@@ -112,25 +112,10 @@ class CodexHelpHubTest extends TestCase {
         $in = "==String Test==";
         $expected = "<h2>String Test</h2>";
         $out = $codex_to->convert( $in );
-        // print "out=$out";
         $this->assertEquals( $expected, $out );
     }
 
-/*
-    public function test10_Template() {
-        $codex_to = new Codex( Codex::TO_HELPHUB );
-        // In Logger class, display_errors is turned off.
-        // To show error, turn on here.
-        ini_set( 'display_errors', 'On' );
-        $in = file_get_contents( "tests/4_template.txt" );
-        $expected = file_get_contents ( "tests/4_template_expected.txt" );
-        $out = $codex_to->convert( $in );
-
-        $this->assertEquals( $expected, $out );
-    }
-*/
-
-    public function test11_SpaceOnly() {
+    public function test10_SpaceOnly() {
         $codex_to = new Codex( Codex::TO_HELPHUB );
         // In Logger class, display_errors is turned off.
         // To show error, turn on here.
@@ -138,7 +123,6 @@ class CodexHelpHubTest extends TestCase {
         $in = "  ";
         $expected = "<p>  </p>";
         $out = $codex_to->convert( $in );
-        // print "out=$out";
         $this->assertEquals( $expected, $out );
     }
 
