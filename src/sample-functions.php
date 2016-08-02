@@ -8,6 +8,10 @@
  * @link		https://github.com/atachibana/codex-converter/
  * @author		Akira Tachibana
  */
+
+/**
+ * Inserts external links in header section.
+ */
 function codex_converter_scripts() {
     if ( is_page_template( 'page-codextohelphub.php' ) ) {
         $dir = get_stylesheet_directory_uri();

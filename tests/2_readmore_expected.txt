@@ -1,3 +1,4 @@
+[codex_languages en="Customizing the Read More" ja="「続きを読む」のカスタマイズ" pt-br="Personalizando "Leia Mais""]
 <p></p>
 <p>If you have set your WordPress site to display post excerpts on the front or home page, you will want visitors to click on the title or a link to encourage them to continue reading your post or article, right?  WordPress makes this technique easy, and customizable.</p>
 <p></p>

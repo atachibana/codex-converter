@@ -117,7 +117,7 @@ abstract class HelpHubConverter implements Converter {
 
 		$new_line = preg_replace( $patterns, $replaces, $line );
 
-		$patterns = "/<tt><a href(.*?)>(.*?)<\/a><\/tt>/";
+		$patterns = "/<tt><a href(.*?)>(.*?)<\/a>[ ]*<\/tt>/";
 		$new_line = preg_replace_callback( $patterns,
 						function( $matches ) {
 							return "<a href" . $matches[1] . "><code>" . preg_replace( "/</", "&lt;", $matches[2] ) . "</code></a>";
@@ -420,16 +420,48 @@ class HelpHubPreConverter extends HelpHubConverter implements PreConverter {
 }
 
 /**
+ * Languages template conversion helper class
+ *
+ * Languages template is converted to short code "codex_languages".
+ */
+class LanguagesTemplate {
+	private $result = "[codex_languages";
+
+	/**
+	 * Adds converted language locator.
+	 *
+	 * @param string $str language locator and page URL separated by "|"
+	 *                    ex) {{ja|Version 4.6}}
+	 */
+	public function add( $str ) {
+		// assumed that this method is called in lanuages template.
+		// Even if $str is not {{xxx|yyy}} format, it will be output.
+		$new_str = preg_replace( '/^\{\{(.*?)\|(.*?)\}\}.*/', ' $1="$2"', $str );
+		$this->result .= $new_str;
+	}
+
+	/**
+	 * Returns converted language locator
+	 *
+	 * @return $string converted result into shortcode
+	 *                 ex) [codex_languages en="Version 4.6" ja="Version 4.6"]
+	 */
+	public function get_all() {
+		return $this->result . "]";
+	}
+}
+
+/**
  * Breace line converter class.
  */
 class HelpHubBraceConverter extends HelpHubConverter implements BraceConverter {
-	private $in_lang_locator = false;
+	private $lang_obj = null;
 
 	/**
 	 * Converts brace line.
 	 *
-	 * Note: Language locator at the top of contents is not required in
-	 *       HelpHub. During $in_lang_locator is true, lines are ignored.
+	 * Note: Language locator at the top of contents is converted to short code
+	 *       [[codex_languages]]. Refer sample-functions.php for detail.
 	 *
 	 * @param string $line should be converted.
 	 */
@@ -441,20 +473,25 @@ class HelpHubBraceConverter extends HelpHubConverter implements BraceConverter {
         }
 
         if ( preg_match( "/^\{\{Languages\|/", $line ) ) {
-            $this->in_lang_locator = true;
+			$this->lang_obj = new LanguagesTemplate();
+			return;
+		}
+
+		if ( preg_match( "/^\}\}/", $line ) ) {
+			$result = $line;
+			if ( $this->lang_obj ) {
+				$result = $this->lang_obj->get_all();
+				$this->lang_obj = null;
+			}
+			Result::get_result()->add( $result );
+			return;
         }
 
-        if ( $this->in_lang_locator ) {
-			// Language locator is not required for HelpHub.
-			// $line is not output even if {{Languages|
-        } else {
-            $new_line = $line;
-            Result::get_result()->add( $new_line );
-        }
-
-        if ( preg_match( "/^\}\}/", $line ) ) {
-            $this->in_lang_locator = false;
-        }
+		if ( $this->lang_obj ) {
+			$this->lang_obj->add( $line );
+		} else {
+			Result::get_result()->add( $line );
+		}
     }
 }
 

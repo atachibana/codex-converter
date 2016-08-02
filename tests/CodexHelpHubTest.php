@@ -42,8 +42,8 @@ class CodexHelpHubTest extends TestCase {
       // In Logger class, display_errors is turned off.
       // To show error, turn on here.
       ini_set( 'display_errors', 'On' );
-      $in = array( "{{before}}", "{{Languages|", "{{en:test}}", "}}", "{{after}}" );
-      $expected = array( "{{before}}", "{{after}}" );
+      $in = array( "{{before}}", "{{Languages|", "{{en|test}}", "{{ja|TEST}}", "}}", "{{after}}" );
+      $expected = array( "{{before}}", '[codex_languages en="test" ja="TEST"]', "{{after}}" );
       $out = $codex_to->convert( $in );
       $this->assertEquals( $expected, $out );
     }
