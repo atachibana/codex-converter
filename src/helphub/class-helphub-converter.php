@@ -430,13 +430,32 @@ class LanguagesTemplate {
 	/**
 	 * Adds converted language locator.
 	 *
+	 * New locator has "_codex" prefix except "en". This is because in the
+	 * future after I18N completed, we want to use simple locator such as "ja".
+	 *
+	 * Shortcode cannot handle hyphnen character well. So, in this pattern,
+	 * pt-br, zh-ch, zh-tw are converted to ptbr, zhcn, zhtw.
+	 *
 	 * @param string $str language locator and page URL separated by "|"
 	 *                    ex) {{ja|Version 4.6}}
 	 */
 	public function add( $str ) {
-		// assumed that this method is called in lanuages template.
-		// Even if $str is not {{xxx|yyy}} format, it will be output.
-		$new_str = preg_replace( '/^\{\{(.*?)\|(.*?)\}\}.*/', ' $1="$2"', $str );
+		$patterns[] = '/^\{\{[ ]*?en[ ]*?\|(.*?)\}\}.*/';
+		$replaces[] = ' en="$1"';
+
+		$patterns[] = '/^\{\{[ ]*?pt\-br[ ]*?\|(.*?)\}\}.*/';
+		$replaces[] = ' ptbr_codex="$1"';
+		$patterns[] = '/^\{\{[ ]*?zh\-cn[ ]*?\|(.*?)\}\}.*/';
+		$replaces[] = ' zhcn_codex="$1"';
+		$patterns[] = '/^\{\{[ ]*?zh\-tw[ ]*?\|(.*?)\}\}.*/';
+		$replaces[] = ' zhtw_codex="$1"';
+
+		$patterns[] = '/^\{\{(.*?)\|(.*?)\}\}.*/';
+		$replaces[] = ' $1_codex="$2"';
+
+		$new_str = preg_replace( $patterns, $replaces, $str );
+		// Even if it does not match, it will be output. Otherwise, we will
+		// lose the original information.
 		$this->result .= $new_str;
 	}
 

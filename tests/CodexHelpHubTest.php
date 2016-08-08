@@ -43,7 +43,13 @@ class CodexHelpHubTest extends TestCase {
       // To show error, turn on here.
       ini_set( 'display_errors', 'On' );
       $in = array( "{{before}}", "{{Languages|", "{{en|test}}", "{{ja|TEST}}", "}}", "{{after}}" );
-      $expected = array( "{{before}}", '[codex_languages en="test" ja="TEST"]', "{{after}}" );
+      $expected = array( "{{before}}", '[codex_languages en="test" ja_codex="TEST"]', "{{after}}" );
+      $out = $codex_to->convert( $in );
+      $this->assertEquals( $expected, $out );
+
+	  // short code cannot handle hyphne character well. We have to absorve it
+	  $in = array( "{{Languages|", "{{pt-br|TEST}}", "{{zh-cn|TEST}}", "{{zh-tw|TEST}}", "}}");
+      $expected = array( '[codex_languages ptbr_codex="TEST" zhcn_codex="TEST" zhtw_codex="TEST"]');
       $out = $codex_to->convert( $in );
       $this->assertEquals( $expected, $out );
     }

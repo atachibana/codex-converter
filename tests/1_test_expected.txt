@@ -1,4 +1,4 @@
-[codex_languages en="Administration Screens" fr="Panneaux Administration"]
+[codex_languages en="Administration Screens" fr_codex="Panneaux Administration"]
 <h2>Test of Codex To HelpHub</h2>
 <p>This is test data of Codex to HelpHub. For more details, please refer <a href="https://github.com/atachibana/codextohelphub">my GitHub repository</a>.</p>
 <h3>Detail</h3>
