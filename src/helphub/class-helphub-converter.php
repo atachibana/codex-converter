@@ -141,6 +141,21 @@ abstract class HelpHubConverter implements Converter {
 class HelpHubPlainConverter extends HelpHubConverter implements PlainConverter {
 
 	/**
+	 * Determines whether this line can be ignored.
+	 *
+	 * Some lines are not required to convert to HelpHub.
+	 *   __TOC__
+	 *   __NOTOC__
+	 *
+	 * @param string $line should be converted.
+	 * @return boolean true if it is not required output
+	 */
+	private function ignored_line( $line ) {
+		$pattern = '/^(__TOC__|__NOTOC__).*/';
+		return preg_match( $pattern, $line );
+	}
+
+	/**
 	 * Converts Plain text.
 	 *
 	 * Encloses by <p> tag.
@@ -148,6 +163,9 @@ class HelpHubPlainConverter extends HelpHubConverter implements PlainConverter {
 	 * @param string $line should be converted.
 	 */
 	public function convert( $line ) {
+		if ( $this->ignored_line( $line ) ) {
+			return;
+		}
         $new_line = $this->word_convert( $line );
         Result::get_result()->add( '<p>' . $new_line . '</p>' );
     }

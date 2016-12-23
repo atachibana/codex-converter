@@ -144,6 +144,16 @@ Codex to HelpHub Deployment steps are as following. Codex Translator Aid tool is
 5. Create the Page with page template "Codex Converter to HelpHub". Just title is enough(i:e no contnents are required in page). Publish it.
 6. Access that page.
 
+# Test
+It assumes phpunit can be invoked.
+## Runs all test at once
+* testrun
+
+## Runs specific test
+* testrun test01 (or test02, test03, ...)
+
+For test case details, refer tests/CodexHelpHubTest.php.
+
 # Customization of Converter
 
 If you want to create your own converter, follow below steps:

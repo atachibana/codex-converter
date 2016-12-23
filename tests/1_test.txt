@@ -2,6 +2,8 @@
 {{en|Administration Screens}}
 {{fr|Panneaux Administration}}
 }}
+__TOC__
+__NOTOC__
 ==Test of Codex To HelpHub==
 This is test data of Codex to HelpHub. For more details, please refer [https://github.com/atachibana/codextohelphub my GitHub repository].
 ===Detail===
