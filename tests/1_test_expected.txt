@@ -1,7 +1,7 @@
 [codex_languages en="Administration Screens" fr_codex="Panneaux Administration"]
-<h2>Test of Codex To HelpHub</h2>
+<h2>Test of Codex To HelpHub<span id="Test_of_Codex_To_HelpHub"></span></h2>
 <p>This is test data of Codex to HelpHub. For more details, please refer <a href="https://github.com/atachibana/codextohelphub">my GitHub repository</a>.</p>
-<h3>Detail</h3>
+<h3>Detail<span id="Detail"></span></h3>
 <p>Line begins with star is list</p>
 <ul>
 <li>List 1</li>
@@ -30,14 +30,14 @@ int main(int argc, char* argv[])
   printf("Hello World.\n");
 }
 [/code]
-<p><a href="https://codex.wordpress.org/Administration Screens">Administration Screens</a></p>
-<p><a href="https://codex.wordpress.org/Administration Screens">Administration Screen</a></p>
+<p><a href="https://codex.wordpress.org/Administration_Screens">Administration Screens</a></p>
+<p><a href="https://codex.wordpress.org/Administration_Screens">Administration Screen</a></p>
 <p><a href="http://example.com">Example site</a></p>
 <p><a href="http://example.com">http://example.com</a></p>
-<h3>Test of Codex3</h3>
-<h4>Test of Codex4</h4>
-<h5>Test of Codex5</h5>
-<h6>Test of Codex6</h6>
+<h3>Test of Codex3<span id="Test_of_Codex3"></span></h3>
+<h4>Test of Codex4<span id="Test_of_Codex4"></span></h4>
+<h5>Test of Codex5<span id="Test_of_Codex5"></span></h5>
+<h6>Test of Codex6<span id="Test_of_Codex6"></span></h6>
 [code language="php"]
 http://rpc.pingomatic.com
 http://rpc.twingly.com

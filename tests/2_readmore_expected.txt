@@ -2,7 +2,7 @@
 <p></p>
 <p>If you have set your WordPress site to display post excerpts on the front or home page, you will want visitors to click on the title or a link to encourage them to continue reading your post or article, right?  WordPress makes this technique easy, and customizable.</p>
 <p></p>
-<h2>The Excerpt Basics</h2>
+<h2>The Excerpt Basics<span id="The_Excerpt_Basics"></span></h2>
 <p></p>
 <p>Excerpts (teasers) can be shown on WordPress through two methods:</p>
 <ul>
@@ -10,7 +10,7 @@
 </ul>
 <p></p>
 <ul>
-<li>The second, by replacing the <a href="https://codex.wordpress.org/Template Tags/the_content"><code>the_content()</code></a> template tag with <a href="https://codex.wordpress.org/Template Tags/the_excerpt"><code>the_excerpt()</code></a>.</li>
+<li>The second, by replacing the <a href="https://codex.wordpress.org/Template_Tags/the_content"><code>the_content()</code></a> template tag with <a href="https://codex.wordpress.org/Template_Tags/the_excerpt"><code>the_excerpt()</code></a>.</li>
 </ul>
 <p></p>
 <p>In both cases, if you have set anything in the Excerpt meta box on the post editor screen, that text will be used. Otherwise, the excerpt will be automatically trimmed.</p>
@@ -18,7 +18,7 @@
 <p>The most commonly used method is the first one, because the user editing the post can choose between showing the whole content or just the excerpt, individually for each post. However, using <code>the_excerpt()</code> in your template file can also get a teaser from the first 55 words of the post content, without the need to place a <strong>more</strong> quicktag in the post.</p>
 <p></p>
 <p>To add a <strong>more</strong> quicktag in your post, put your cursor where you want to end the excerpted content of your post and click the <strong>more</strong> quicktag button.</p>
-<p><a href="https://codex.wordpress.org/Posts_Add_New_Screen#Visual_Versus_Text_Editor">quicktags</a> are the little buttons found above the editing window in your <a href="https://codex.wordpress.org/Administration Screens">Administration</a> > <a href="https://codex.wordpress.org/Administration_Screens#Posts">Post</a> > <a href="https://codex.wordpress.org/Posts_Add_New_Screen">Add New Post</a>. They include <strong>bold</strong>, <em>italic</em>, links, and others, and the famous <strong>more</strong>.</p>
+<p><a href="https://codex.wordpress.org/Posts_Add_New_Screen#Visual_Versus_Text_Editor">quicktags</a> are the little buttons found above the editing window in your <a href="https://codex.wordpress.org/Administration_Screens">Administration</a> > <a href="https://codex.wordpress.org/Administration_Screens#Posts">Post</a> > <a href="https://codex.wordpress.org/Posts_Add_New_Screen">Add New Post</a>. They include <strong>bold</strong>, <em>italic</em>, links, and others, and the famous <strong>more</strong>.</p>
 <p></p>
 <p><br /><strong>*** [TODO] Embed Image HERE !!! ***: posteditor_more_button_text.jpg </strong><br /></p>
 <p></p>
@@ -34,9 +34,9 @@ his face and said
 <p></p>
 <p>Users can then continue reading more as you have enticed them with your summary introduction, by clicking on a link to the full article. Themes usually include this link in the title and the above methods will generate it by default trailing your teaser, as the example below.</p>
 <p></p>
-<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">more...</a></div></p>
+<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="#Customizing_the_.22more.E2.80.A6.22_text">more...</a></div></p>
 <p></p>
-<h2>Read More Techniques</h2>
+<h2>Read More Techniques<span id="Read_More_Techniques"></span></h2>
 <p>The parameters within the template tag <a href="https://codex.wordpress.org/Template_Tags/the_content">the_content()</a> are as follows:</p>
 <p></p>
 [code language="php"]
@@ -56,7 +56,7 @@ his face and said
 <li>Include <code>&lt;!--noteaser--></code> in the post text, immediately after the <code>&lt;!--more-->.</code></li>
 </ul>
 <p></p>
-<h3>Prevent Page Scroll When Clicking the More Link</h3>
+<h3>Prevent Page Scroll When Clicking the More Link<span id="Prevent_Page_Scroll_When_Clicking_the_More_Link"></span></h3>
 <p>By default, clicking the <strong>.more-link</strong> anchor opens the web document and scrolls the page to section of the document containing the named anchor (#more-000). This section is where writers choose to place the <code>&lt;!--more--&gt;</code> tag within a post type.</p>
 <p></p>
 <p>Users can prevent the scroll by filtering <code>the_content_more_link</code> with a simple regular expression.</p>
@@ -71,7 +71,7 @@ add_filter( 'the_content_more_link', 'remove_more_link_scroll' );
 <p></p>
 <p>Simply add the above code to the theme's <code>functions.php</code> file and the named anchors are no more.</p>
 <p></p>
-<h3>Modify The Read More Link Text</h3>
+<h3>Modify The Read More Link Text<span id="Modify_The_Read_More_Link_Text"></span></h3>
 <p></p>
 <p>Adding this code to your <code>functions.php</code> file enables you to customize the read more link text.</p>
 [code language="php"]
@@ -83,9 +83,9 @@ add_filter( 'the_content_more_link', 'modify_read_more_link' );
 <p></p>
 <p>Code reference: https://developer.wordpress.org/reference/hooks/the_content_more_link/</p>
 <p></p>
-<h2>Modify the Read More text when using the <tt>the_excerpt()</tt></h2>
+<h2>Modify the Read More text when using the <tt>the_excerpt()</tt><span id="Modify_the_Read_More_text_when_using_the_the_excerpt()"></span></h2>
 <p></p>
-<p>Sometimes you can't afford adding a <strong>more</strong> quicktag to all your posts, so the only way to show an excerpt is modifying the template, changing <code>the_content()</code> to <code>the_excerpt()</code>. It will show the text "Read More" (<a href="https://codex.wordpress.org/Version 4.1">Version 4.1</a> and later) or "[...]" (older versions).</p>
+<p>Sometimes you can't afford adding a <strong>more</strong> quicktag to all your posts, so the only way to show an excerpt is modifying the template, changing <code>the_content()</code> to <code>the_excerpt()</code>. It will show the text "Read More" (<a href="https://codex.wordpress.org/Version_4.1">Version 4.1</a> and later) or "[...]" (older versions).</p>
 <p></p>
 <p>To customize this text, add the following code to your <em>functions.php</em> file.</p>
 <p></p>
@@ -98,9 +98,9 @@ function new_excerpt_more($more) {
 add_filter('excerpt_more', 'new_excerpt_more');
 [/code]
 <p></p>
-<p>If you are using a <a href="https://codex.wordpress.org/Child Themes">Child Theme</a>, the above code will not work without modification if the parent theme has its own filters setting its own "more" link. You will need to use the <a href="https://developer.wordpress.org/reference/functions/remove filter"><code>remove_filter()</code></a> function to remove the parent's filters for yours to work. The problem is your functions.php file is loaded before the parent's functions.php, so at the time of your file's execution, there is no filter to remove yet, and your <code>remove_filter()</code> code will fail without warning.</p>
+<p>If you are using a <a href="https://codex.wordpress.org/Child_Themes">Child Theme</a>, the above code will not work without modification if the parent theme has its own filters setting its own "more" link. You will need to use the <a href="https://developer.wordpress.org/reference/functions/remove filter"><code>remove_filter()</code></a> function to remove the parent's filters for yours to work. The problem is your functions.php file is loaded before the parent's functions.php, so at the time of your file's execution, there is no filter to remove yet, and your <code>remove_filter()</code> code will fail without warning.</p>
 <p></p>
-<p>The key is to put your <code>remove_filter()</code> code in a function that executes from an <a href="https://codex.wordpress.org/Plugin API/Action Reference">action hook</a> that triggers after the parent theme is loaded. The following code is an example of the additional code needed to get the above code to work from a child theme of the parent theme <i><a href="https://codex.wordpress.org/Twenty Eleven">Twenty Eleven</a></i>. You will need to examine your actual parent theme's code for the correct parameters in the <code>remove_filter()</code> code, they must exactly match the <code>add_filter()</code> parameters used by the parent.</p>
+<p>The key is to put your <code>remove_filter()</code> code in a function that executes from an <a href="https://codex.wordpress.org/Plugin_API/Action_Reference">action hook</a> that triggers after the parent theme is loaded. The following code is an example of the additional code needed to get the above code to work from a child theme of the parent theme <i><a href="https://codex.wordpress.org/Twenty_Eleven">Twenty Eleven</a></i>. You will need to examine your actual parent theme's code for the correct parameters in the <code>remove_filter()</code> code, they must exactly match the <code>add_filter()</code> parameters used by the parent.</p>
 [code language="php"]
 function child_theme_setup() {
 	// override parent theme's 'more' text for excerpts
@@ -110,14 +110,14 @@ function child_theme_setup() {
 add_action( 'after_setup_theme', 'child_theme_setup' );
 [/code]
 <p></p>
-<h2>Customizing the "more&hellip;" text</h2>
+<h2>Customizing the "more&hellip;" text<span id="Customizing_the_&quot;more&amp;hellip;&quot;_text"></span></h2>
 <p>Seeing that you know how it works, now look at how we can make this little invitation to continue reading your post be more inviting.</p>
 <p></p>
-<p>By design, the <a href="https://codex.wordpress.org/Template Tags/the_content"><code>the_content()</code></a> template tag includes a parameter for setting the text to be displayed in the the "more&hellip;" link which allows you to continue reading.</p>
+<p>By design, the <a href="https://codex.wordpress.org/Template_Tags/the_content"><code>the_content()</code></a> template tag includes a parameter for setting the text to be displayed in the the "more&hellip;" link which allows you to continue reading.</p>
 <p></p>
 <p>By default, it looks like this:</p>
 <p></p>
-<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">more...</a></div></p>
+<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="#Customizing_the_.22more.E2.80.A6.22_text">more...</a></div></p>
 <p></p>
 <p>If you want to change the words from <em>more....</em> to something else, just type in the new words into the template tag:</p>
 <p></p>
@@ -135,7 +135,7 @@ your seat? Click here to solve the mystery.</span>'); ?>[/code]
 <p></p>
 <p>Then set the <code>moretext</code> class in your <code>style.css</code> style sheet to whatever you want.  Here is an example of the style which features bold, italic text that is slightly smaller than the default text:</p>
 <p></p>
-<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <span style="font-weight: bold; font-size: 90%; font-style: italic; "><a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">...On the Edge of Your Seat? Click Here to Solve the Mystery.</a></span></div></p>
+<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <span style="font-weight: bold; font-size: 90%; font-style: italic; "><a href="#Customizing_the_.22more.E2.80.A6.22_text">...On the Edge of Your Seat? Click Here to Solve the Mystery.</a></span></div></p>
 <p></p>
 <p>Some people do not want the text and prefer to use an extended character or <a href="https://codex.wordpress.org/Fun_Character_Entities">HTML character entity</a> to move the reader on to the full post.</p>
 <p></p>
@@ -143,16 +143,16 @@ your seat? Click here to solve the mystery.</span>'); ?>[/code]
 <p></p>
 <p>Would look like this:</p>
 <p></p>
-<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">&raquo; &raquo; &raquo; &raquo;</a></div></p>
+<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="#Customizing_the_.22more.E2.80.A6.22_text">&raquo; &raquo; &raquo; &raquo;</a></div></p>
 <p></p>
-<p>If you want to include the title of the post in the <strong>more</strong> text, use <a href="https://codex.wordpress.org/Template Tags/the_title"><code>the_title()</code></a> template tag::</p>
+<p>If you want to include the title of the post in the <strong>more</strong> text, use <a href="https://codex.wordpress.org/Template_Tags/the_title"><code>the_title()</code></a> template tag::</p>
 <p></p>
 [code language="php"]<?php the_content("...continue reading the story
 called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?>[/code]
 <p></p>
-<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="https://codex.wordpress.org/#Customizing_the_.22more.E2.80.A6.22_text">...continue reading the story called A Tale That Must Be Told</a></div></p>
+<p><div style="border:1px solid blue; width:50%; margin: 20px; padding:20px">and I told him that he should get moving or I'd be on him like a limpet.  He looked at me with shock on his face and said <a href="#Customizing_the_.22more.E2.80.A6.22_text">...continue reading the story called A Tale That Must Be Told</a></div></p>
 <p></p>
-<h3>Having a custom text for each post</h3>
+<h3>Having a custom text for each post<span id="Having_a_custom_text_for_each_post"></span></h3>
 <p></p>
 <p>Although <code>the_content()</code> is usually called from the template with a standard text as described above, it is possible to have an individual text for certain posts. In the text editor, simply write <code>&lt;!--more Your custom text --></code>.</p>
 <p></p>
@@ -160,8 +160,8 @@ called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?>[/code]
 <p></p>
 <p><code>&lt;!--more But wait, there's more! --></code></p>
 <p></p>
-<h3>Adding An Image</h3>
-<p>The design possibilities with CSS are practically unlimited, and WordPress allows you to use images in many of their <a href="https://codex.wordpress.org/Template Tags">Template Tags</a>, including the <code>more</code> tag.  To add an image, there are two ways to do it.  Begin with the most simple -- listing it in <code>the_content()</code> template tag.</p>
+<h3>Adding An Image<span id="Adding_An_Image"></span></h3>
+<p>The design possibilities with CSS are practically unlimited, and WordPress allows you to use images in many of their <a href="https://codex.wordpress.org/Template_Tags">Template Tags</a>, including the <code>more</code> tag.  To add an image, there are two ways to do it.  Begin with the most simple -- listing it in <code>the_content()</code> template tag.</p>
 <p></p>
 <p>This examples features the image of a leaf after the "Read More" text and assumes that the image file is within your theme's images folder.</p>
 <p></p>
@@ -186,7 +186,7 @@ called " . the_title(&#39;&#39;, &#39;&#39;, false)); ?>[/code]
 <p></p>
 <p>You have gotten the basics.  From here, it is up to your imagination.</p>
 <p></p>
-<h3>How to use Read More in Pages</h3>
+<h3>How to use Read More in Pages<span id="How_to_use_Read_More_in_Pages"></span></h3>
 <p></p>
 <p>Please remember that the "Read More" tag is used only on the Home page which shows the latest posts. It does not work in "<a href="https://codex.wordpress.org/Pages">Pages</a>". If you want to turn it on in <a href="https://codex.wordpress.org/Pages">Pages</a> too for showing a set of partial posts, use the following code inside the loop for the dynamic content:</p>
 <p></p>
@@ -201,12 +201,12 @@ $more = 0;
 
 [/code]
 <p></p>
-<h4>When to set $more</h4>
+<h4>When to set $more<span id="When_to_set_$more"></span></h4>
 <p>It's important that if you're going to over-ride the default $more global variable you do it <em>inside</em> The Loop, but <em>after</em> your setup the post. If you're working with the standard Loop and using <code>the_post()</code>, make sure you set <code>$more</code> <em>after</em> <code>the_post</code> (but <em>before</em> <code>the_content()</code>.</p>
 <p></p>
 <p>See <a href="https://wordpress.org/support/topic/more-tag-ignored-on-home-page">More tag ignored on static front page</a> forum topic.</p>
 <p></p>
-<h3>More about $more</h3>
+<h3>More about $more<span id="More_about_$more"></span></h3>
 <p></p>
 <p>If you set the $more variable to -1, the More tag will not be displayed.  This can be useful in a "mullet loop", which displays the full content for only the first post, and then displays only excerpts for all remaining posts. Like this:</p>
 <p></p>

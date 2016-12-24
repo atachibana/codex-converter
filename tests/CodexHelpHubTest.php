@@ -10,7 +10,7 @@ class CodexHelpHubTest extends TestCase {
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = array( "==TITLE==" );
-        $expected = array( "<h2>TITLE</h2>" );
+        $expected = array( "<h2>TITLE<span id=\"TITLE\"></span></h2>" );
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
@@ -116,7 +116,7 @@ class CodexHelpHubTest extends TestCase {
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = "==String Test==";
-        $expected = "<h2>String Test</h2>";
+        $expected = "<h2>String Test<span id=\"String_Test\"></span></h2>";
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
@@ -138,10 +138,46 @@ class CodexHelpHubTest extends TestCase {
         // To show error, turn on here.
         ini_set( 'display_errors', 'On' );
         $in = "<tt>[[Template Tags/the_content|the_content()]]</tt>";
-        $expected = "<p><a href=\"https://codex.wordpress.org/Template Tags/the_content\"><code>the_content()</code></a></p>";
+        $expected = "<p><a href=\"https://codex.wordpress.org/Template_Tags/the_content\"><code>the_content()</code></a></p>";
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
     }
 
+	public function test12_section_id() {
+		$codex_to = new Codex( Codex::TO_HELPHUB );
+        // In Logger class, display_errors is turned off.
+        // To show error, turn on here.
+        ini_set( 'display_errors', 'On' );
 
+        $in = "[[#External References|External Reference]]";
+        $expected = "<p><a href=\"#External_References\">External Reference</a></p>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+		$in = "[[Administration Screens#Appearance|Appearance]]";
+        $expected = "<p><a href=\"https://codex.wordpress.org/Administration_Screens#Appearance\">Appearance</a></p>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+		$in = "====== External References ======";
+        $expected = "<h6>External References<span id=\"External_References\"></span></h6>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+		$in = "==Modify <tt>the_excerpt()</tt>==";
+        $expected = "<h2>Modify <tt>the_excerpt()</tt><span id=\"Modify_the_excerpt()\"></span></h2>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+		$in = "== Customizing the \"more&hellip;\" text ==";
+        $expected = "<h2>Customizing the \"more&hellip;\" text<span id=\"Customizing_the_&quot;more&amp;hellip;&quot;_text\"></span></h2>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+		$in = '====When to set $more====';
+        $expected = '<h4>When to set $more<span id="When_to_set_$more"></span></h4>';
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+
+	}
 }

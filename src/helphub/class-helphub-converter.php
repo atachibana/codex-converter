@@ -103,19 +103,34 @@ abstract class HelpHubConverter implements Converter {
 		$patterns[] = "/\[\[Image\:(.*?)\]\]/";
 		$replaces[] = '<br /><strong>*** [TODO] Embed Image HERE !!! ***: $1 </strong><br />';
 
-		$patterns[] = "/\[\[(((?!\]\]).)*?)\|(.*?)\]\]/";
-		$replaces[] = '<a href="https://codex.wordpress.org/$1">$3</a>';
-
-		$patterns[] = "/\[\[(.*?)\]\]/";
-		$replaces[] = '<a href="https://codex.wordpress.org/$1">$1</a>';
-
-		$patterns[] = "/\[http(.*?) (.*?)\]/";
+ 		$patterns[] = "/\[http(.*?) (.*?)\]/";
 		$replaces[] = '<a href="http$1">$2</a>';
 
 		$patterns[] = "/\[http(.*?)\]/";
 		$replaces[] = '<a href="http$1">http$1</a>';
 
 		$new_line = preg_replace( $patterns, $replaces, $line );
+
+		$pattern = "/\[\[#(.*?)\|(.*?)\]\]/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<a href=\"#" . $this->convert_text_to_id( $matches[1] ) . "\">" . $matches[2] . "</a>";
+						},
+						$new_line );
+
+		$pattern = "/\[\[(.*?)\|(.*?)\]\]/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<a href=\"https://codex.wordpress.org/" . $this->convert_text_to_id( $matches[1] ) . "\">" . $matches[2] . "</a>";
+						},
+						$new_line );
+
+		$pattern = "/\[\[(.*?)\]\]/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<a href=\"https://codex.wordpress.org/" . $this->convert_text_to_id( $matches[1] ) . "\">" . $matches[1] . "</a>";
+						},
+						$new_line );
 
 		$patterns = "/<tt><a href(.*?)>(.*?)<\/a>[ ]*<\/tt>/";
 		$new_line = preg_replace_callback( $patterns,
@@ -133,6 +148,20 @@ abstract class HelpHubConverter implements Converter {
 
 		return $new_line;
     }
+
+	/**
+	 * Converts text to id
+	 *
+	 * Strips off HTML tag, Replace space by underscore, Replace special
+	 * symbols by character references.
+	 *
+	 * @param string $line should be converted.
+	 */
+	public function convert_text_to_id( $line ) {
+		$new_line = preg_replace( "/ /", "_", $line );
+		$new_line = htmlspecialchars( strip_tags( $new_line ) );
+		return $new_line;
+	}
 }
 
 /**
@@ -184,19 +213,51 @@ class HelpHubTitleConverter extends HelpHubConverter implements TitleConverter {
 	 * @param string $line should be converted.
 	 */
 	public function convert( $line ) {
-        $patterns = array( '/^======[ ]*(.*?)[ ]*======/',
-                           '/^=====[ ]*(.*?)[ ]*=====/',
-                           '/^====[ ]*(.*?)[ ]*====/',
-                           '/^===[ ]*(.*?)[ ]*===/',
-                           '/^==[ ]*(.*?)[ ]*==/',
-                           '/^=[ ]*(.*?)[ ]*=/' );
-        $replaces = array( '<h6>$1</h6>',
-                           '<h5>$1</h5>',
-                           '<h4>$1</h4>',
-                           '<h3>$1</h3>',
-                           '<h2>$1</h2>',
-                           '<h1>$1</h1>' );
-        $new_line = preg_replace( $patterns, $replaces, $line );
+		$new_line = $line;
+
+		$pattern = "/^======[ ]*(.*?)[ ]*======/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<h6>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h6>";
+						},
+						$new_line );
+
+		$pattern = "/^=====[ ]*(.*?)[ ]*=====/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<h5>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h5>";
+						},
+						$new_line );
+
+		$pattern = "/^====[ ]*(.*?)[ ]*====/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<h4>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h4>";
+						},
+						$new_line );
+
+		$pattern = "/^===[ ]*(.*?)[ ]*===/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<h3>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h3>";
+						},
+						$new_line );
+
+		$pattern = "/^==[ ]*(.*?)[ ]*==/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							// return "<h2>$matches[1]<span id=\"" . preg_replace( "/ /", "_", $matches[1] ) . "\"></span></h2>";
+							return "<h2>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h2>";
+						},
+						$new_line );
+
+		$pattern = "/^=[ ]*(.*?)[ ]*=/";
+		$new_line = preg_replace_callback( $pattern,
+						function( $matches ) {
+							return "<h1>$matches[1]<span id=\"" . $this->convert_text_to_id( $matches[1] ) . "\"></span></h1>";
+						},
+						$new_line );
+
         Result::get_result()->add( $new_line );
     }
 }
