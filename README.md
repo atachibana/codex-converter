@@ -180,6 +180,11 @@ $output_data = $codex_to->convert( $input_data );
 Akira Tachibana (http://unofficialtokyo.com)
 
 # History
+## Version 1.2 (24/Dec/2016)
+* Add span id to h1 - h2 tag
+* Fix: Link included space and special characters
+* Fix: No \_\_TOC\_\_
+
 ## Version 1.1 (24/Jul/2016)
 * `convert()` handles string input/output.
 * Line types handling routines were moved to new `Util` class.
