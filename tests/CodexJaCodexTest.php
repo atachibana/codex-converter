@@ -3,7 +3,7 @@
 mb_language("ja");
 mb_internal_encoding('UTF-8');
 
-use phpunit . DIRECTORY_SEPARATOR . framework . DIRECTORY_SEPARATOR . TestCase;
+use PHPUnit\Framework\TestCase;
 
 class CodexJaCodexTest extends TestCase {
 

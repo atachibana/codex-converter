@@ -1,6 +1,6 @@
 <?php
 
-use phpunit\framework\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class CodexHelpHubTest extends TestCase {
 
@@ -178,6 +178,18 @@ class CodexHelpHubTest extends TestCase {
         $expected = '<h4>When to set $more<span id="When_to_set_$more"></span></h4>';
         $out = $codex_to->convert( $in );
         $this->assertEquals( $expected, $out );
-
 	}
+/*
+    public function test13_blockquote_issue2() {
+		$codex_to = new Codex( Codex::TO_HELPHUB );
+        // In Logger class, display_errors is turned off.
+        // To show error, turn on here.
+        ini_set( 'display_errors', 'On' );
+
+        $in = "<blockquote><i>test</i></blockquote>";
+        $expected = "<blockquote><i>test</i></blockquote>";
+        $out = $codex_to->convert( $in );
+        $this->assertEquals( $expected, $out );
+    }
+*/	
 }
