@@ -2,7 +2,8 @@
 
 // use PHPUnit\Framework\TestCase;
 // require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Autoload.php';
+// require_once 'PHPUnit/Autoload.php';
+require_once ( 'PHPUnit/Framework/TestCase.php' );
 
 class CodexHelpHubTest extends TestCase {
 
